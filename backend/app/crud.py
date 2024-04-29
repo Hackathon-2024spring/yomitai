@@ -2,14 +2,15 @@ from sqlalchemy.orm import Session
 
 from . import models, schemas
 from passlib.context import CryptContext
+from .auth import hash_password  # auth.pyからハッシュ化関数をインポート
 
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
-def get_user_by_name(db: Session, name: str):
-    return db.query(models.User).filter(models.User.name == name).first()
+def get_user_by_username(db: Session, username: str):
+    return db.query(models.User).filter(models.User.user_name == username).first()
 
 
 def get_users(db: Session, skip: int = 0, limit: int = 100):
@@ -21,10 +22,10 @@ def get_user_by_email(db: Session, email: str):
 
 
 # パスワードのハッシュ化設定
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+# def hash_password(password: str) -> str:
+#     return pwd_context.hash(password)
 
 def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = hash_password(user.password)

@@ -1,24 +1,27 @@
-from fastapi import APIRouter, HTTPException, Depends, Body
+from fastapi import APIRouter, HTTPException, Depends, Response, status
 from sqlalchemy.orm import Session
 from .. import crud, models, schemas, database
-from ..auth import authenticate_user, create_access_token
-import datetime
+from ..auth import authenticate_user
+import secrets
 
 router = APIRouter()
 
-@router.post("/", response_model=schemas.Token)
+@router.post("/")
 
-def login(username: str = Body(...), password: str = Body(...), db: Session = Depends(database.get_db)):
+def login(user_name: str, password: str, response: Response, db: Session = Depends(database.get_db)):
     # ユーザー認証
-    user = authenticate_user(db, username, password)
+    user = authenticate_user(db, user_name, password)
     if not user:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
 
-    # アクセストークンの作成
-    access_token_expires = datetime.timedelta(minutes=30)
-    access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
-    )
+    # セッションIDを生成してクッキーに保存
+    session_id = secrets.token_urlsafe()
+    response.set_cookie(key="session_id", value=session_id, httponly=True, secure=True, samesite='Lax')
 
-    # 生成したトークンを含むレスポンスを返す
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"message": "Login successful!"}
+
+@router.post("/logout")
+def logout(response: Response):
+    # クッキーからセッションIDを削除
+    response.delete_cookie("session_id")
+    return {"message": "Logged out"}

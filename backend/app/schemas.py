@@ -19,7 +19,7 @@ class User(UserBase):
         orm_mode = True
 
 class Login(BaseModel):
-    email: str
+    user_name: str
     password: str
 
 
