@@ -28,7 +28,7 @@ export default function Signup() {
           {errors.password && <span>パスワードが必要です</span>}
         </div>
         <div>
-          <input id="password" className="border" {...register("password", { required: true })} type="password" placeholder="Password" />
+          <input id="re-enter-password" className="border" {...register("password", { required: true })} type="password" placeholder="Password" />
           {errors.password && <span>パスワードが必要です</span>}
         </div>
         <button type="submit">サインアップ</button>
