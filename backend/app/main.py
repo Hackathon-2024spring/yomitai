@@ -5,13 +5,23 @@ from . import crud, models, schemas
 from .database import SessionLocal, engine
 from .models import User
 from .schemas import User
-from .routers.user import router
+from .routers.user import router as user_router
+from .routers.signup import router as signup_router
+from .routers.login import router as login_router
+
 # models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+# 各ルーターを適切なプレフィックスでインクルード
+app.include_router(user_router, prefix="/user", tags=["user"])
+app.include_router(signup_router, prefix="/api/signup", tags=["signup"])
+app.include_router(login_router, prefix="/api/login", tags=["login"])
+
+
 # routerディレクトリをインクルード
-app.include_router(router)
+# app.include_router(router)
+
 
 # 当初各機能をmain.pyに記述していたが、チーム開発のしやすさを考慮し、routerディレクトリに記述する。
 # def get_db():
@@ -58,7 +68,7 @@ app.include_router(router)
 #     if db_user:
 #         raise HTTPException(status_code=400, detail="Username already registered")
 #     return crud.create_user(db=db, user=user)
-    
+
 
 # # ログイン
 # @app.post("/login")

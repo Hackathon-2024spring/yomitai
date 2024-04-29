@@ -1,20 +1,26 @@
 from datetime import datetime, date
 from pydantic import BaseModel
 
+class UserBase(BaseModel):
+    # UserBase クラスは BaseModel を継承しており、Pydantic の全機能を利用できる
+    user_name:str
+    email:str
 
-class User(BaseModel):
-    user_name: str
-    email: str
+class UserCreate(UserBase):
+    # UserCreate クラスは UserBase を継承しており、UserBase に定義された属性に加えて追加の属性を定義できる
     password: str
+
+class User(UserBase):
+    id:int
     created_at: datetime
     updated_at: datetime
 
     class Config:
         orm_mode = True
 
-class UserCreate(User):
-    pass
-
+class Login(BaseModel):
+    user_name: str
+    password: str
 
 
 class DailyLog(BaseModel):
@@ -48,14 +54,14 @@ class ReadingSession(BaseModel):
     end_date: date
     created_at: datetime
     updated_at: datetime
-    
+
     class Config:
         orm_mode = True
 
 class Tag(BaseModel):
     created_at: datetime
     updated_at: datetime
-    
+
     class Config:
         orm_mode = True
 
