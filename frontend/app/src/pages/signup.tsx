@@ -1,9 +1,11 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
+
 type SignupForm = {
   username: string
   email: string
   password: string
+  reEnterPassword: string
 }
 
 export default function Signup() {
@@ -28,7 +30,7 @@ export default function Signup() {
           {errors.password && <span>パスワードが必要です</span>}
         </div>
         <div>
-          <input id="re-enter-password" className="border" {...register("password", { required: true })} type="password" placeholder="Password" />
+          <input id="re-enter-password" className="border" {...register("reEnterPassword", { required: true })} type="password" placeholder="Password" />
           {errors.password && <span>パスワードが必要です</span>}
         </div>
         <button type="submit">サインアップ</button>
