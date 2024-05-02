@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <>
       <h2 className="text-xl">Home</h2>
-      <Link to='/login'>Login</Link>
+      <Link to="/login">Login</Link>
     </>
-  )
+  );
 }
