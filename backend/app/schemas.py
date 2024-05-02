@@ -1,5 +1,6 @@
 from datetime import datetime, date
 from pydantic import BaseModel
+from typing import Optional, List
 
 class UserBase(BaseModel):
     # UserBase クラスは BaseModel を継承しており、Pydantic の全機能を利用できる
@@ -39,21 +40,26 @@ class Book(BaseModel):
     author: str
     publisher: str
     total_page: int
-    isbn_code: str
-    image: str
+    isbn: Optional[str] = None
+    image: Optional[str] = None
     created_at: datetime
-    updated_at: datetime
+    updated_at: Optional[datetime] = None
 
     class Config:
         orm_mode = True
 
 
+class BookCreate(Book):
+    planned_end_date: date
+    genre: str
+    tag: list[str] = []
+
 class ReadingSession(BaseModel):
     start_date: date
     planned_end_date: date
-    end_date: date
+    end_date: Optional[date] = None
     created_at: datetime
-    updated_at: datetime
+    updated_at: Optional[datetime] = None
 
     class Config:
         orm_mode = True
