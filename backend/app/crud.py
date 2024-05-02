@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
+from datetime import date, datetime
 
 from . import models, schemas
+from .schemas import Book
 from passlib.context import CryptContext
 from .auth import hash_password  # auth.pyからハッシュ化関数をインポート
 from fastapi import HTTPException
@@ -57,3 +59,59 @@ def create_user(db: Session, user: schemas.UserCreate):
 #     db.commit()
 #     db.refresh(new_task)
 #     return new_task
+
+# ISBNコードをDBから検索し取得
+def get_book_by_isbn(db: Session, isbn: str):
+    return db.query(models.Book).filter(models.Book.isbn_code == isbn).first()
+
+def create_book(db: Session, book: Book):
+    # 新しいBookオブジェクトの作成
+    db_book = models.Book(
+        title=book.title,
+        author=book.author,
+        publisher=book.publisher,
+        total_page=book.total_page,
+        isbn_code=book.isbn,
+        image=book.image,
+     )
+    # 新しい書籍をデータベースセッションに追加
+    db.add(db_book)
+    # 変更をコミットしてデータベースに保存
+    db.commit()
+    # 新しい書籍情報をリフレッシュして、IDなどの自動生成フィールドを含める
+    db.refresh(db_book)
+    # 新しい書籍オブジェクトを返す
+    return db_book
+
+
+def create_reading_session(db: Session, user_id: int, book_id: int, planned_end_date: date):
+    # 新しいReadingSessionオブジェクトの作成
+    db_reading_session = models.Reading_session(
+        user_id=user_id,
+        book_id=book_id,
+        start_date=datetime.now(),  # 現在の日付・時刻をstart_dateとして使用
+        planned_end_date=planned_end_date,
+        # created_atは省略。モデルでデフォルト値が設定されているため
+    )
+    # 新しい読書セッションをデータベースセッションに追加
+    db.add(db_reading_session)
+    # 変更をコミットしてデータベースに保存
+    db.commit()
+    # 新しい読書セッション情報をリフレッシュ
+    db.refresh(db_reading_session)
+    # 新しい読書セッションオブジェクトを返す
+    return db_reading_session
+
+def get_genre_by_name(db: Session, name: str):
+    return db.query(models.Genre).filter(models.Genre.name == name).first()
+
+def create_book_genre(db: Session, user_id: int, book_id: int, genre_id: int):
+    db_book_genre = models.Book_genre(
+        user_id=user_id,
+        book_id=book_id,
+        genre_id=genre_id,
+    )
+    db.add(db_book_genre)
+    db.commit()
+    db.refresh(db_book_genre)
+    return db_book_genre
