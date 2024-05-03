@@ -115,3 +115,34 @@ def create_book_genre(db: Session, user_id: int, book_id: int, genre_id: int):
     db.commit()
     db.refresh(db_book_genre)
     return db_book_genre
+
+def get_tag_by_name(db: Session, name: str):
+    # タグを取得するcrud処理
+    return db.query(models.Tag).filter(models.Tag.name == name).first()
+
+def create_tag(db: Session, name: str):
+    # タグを登録するcrud処理
+    new_tag = models.Tag(name=name)
+    # 新しいタグをデータベースセッションに追加
+    db.add(new_tag)
+    # 変更をコミットしてデータベースに保存
+    db.commit()
+    # 新しいタグ情報をリフレッシュして、IDなどの自動生成フィールドを含める
+    db.refresh(new_tag)
+    # 新しいタグオブジェクトを返す
+    return new_tag
+
+def create_book_tag(db: Session, user_id: int, book_id: int, tag_id: int):
+    new_book_tag = models.Book_tag(
+        user_id=user_id,
+        book_id=book_id,
+        tag_id=tag_id,
+    )
+    # 新しいbook_tagをデータベースセッションに追加
+    db.add(new_book_tag)
+    # 変更をコミットしてデータベースに保存
+    db.commit()
+    # 新しいbook_tag情報をリフレッシュして、IDなどの自動生成フィールドを含める
+    db.refresh(new_book_tag)
+    # 新しいbook_tagオブジェクトを返す
+    return new_book_tag

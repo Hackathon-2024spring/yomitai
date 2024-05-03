@@ -27,7 +27,7 @@ def process_book_registration(book: schemas.BookCreate, db: Session = Depends(da
     process_genre(db, book.genre, db_book.id)
     
     # タグの処理
-    # process_tags(db, book.tag, db_book.id)
+    process_tags(db, book.tag, db_book.id)
     
     return db_book
 
@@ -47,13 +47,18 @@ def process_genre(db: Session, genre: str, book_id: int):
     else:
         # ジャンルが None または空文字列の場合の処理
         print("ジャンル名が指定されていません。")
-# # タグの処理（検討中）
-# def process_tags(db: Session, tag: list, book_id: int):
-#     for tag_name in tag:
-#         # リクエストのタグが既に存在するか
-#         tag = crud.get_tag_by_name(db, name=tag_name)
-#         if not tag:
-#             # 新規タグを登録
-#             tag = crud.create_tag(db, name=tag_name)
-#         # book_tagsに登録
-#         crud.create_book_tag(db, tag_id=tag.id, book_id=book_id)
+# タグをリストから取り出し登録がなければタグを登録し、各タグをbook_tagsに登録する処理（検討中）
+def process_tags(db: Session, tags: list, book_id: int):
+    # ユーザー情報の取得（仮示）
+    user_id = 1 # 今後作成（認証済みユーザーのIDを取得）
+    for tag_name in tags:
+        # リクエストのタグが既に存在するか
+        tag = crud.get_tag_by_name(db, name=tag_name)
+        if not tag:
+            # 新規タグを登録
+            tag = crud.create_tag(db, name=tag_name)
+        # tag_idを取得
+        tag_id=tag.id
+        # book_tagsに登録
+        crud.create_book_tag(db, user_id=user_id, book_id=book_id, tag_id=tag_id)
+    
