@@ -5,6 +5,12 @@ import "./index.css";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
+import Dashboard from "./pages/dashboard";
+import { worker } from "./mocks/browser";
+
+if (import.meta.env.DEV) {
+  worker.start();
+}
 
 const router = createBrowserRouter([
   {
@@ -18,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
   },
 ]);
 
