@@ -10,6 +10,7 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     # UserCreate クラスは UserBase を継承しており、UserBase に定義された属性に加えて追加の属性を定義できる
     password: str
+    confirm_password: str #ここに確認用パスワード追加
 
 class User(UserBase):
     id:int
