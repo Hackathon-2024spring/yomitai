@@ -33,6 +33,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = hash_password(user.password)
     user_data = user.dict()
     user_data.pop("password")  # 元のパスワードを削除
+    user_data.pop("confirm_password", None)  # 確認用パスワードも削除
     new_user = models.User(**user_data, password=hashed_password)
     db.add(new_user)
     try:
