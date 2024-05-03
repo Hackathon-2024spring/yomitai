@@ -33,6 +33,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = hash_password(user.password)
     user_data = user.dict()
     user_data.pop("password")  # 元のパスワードを削除
+    user_data.pop("confirm_password", None)  # 確認用パスワードも削除
     new_user = models.User(**user_data, password=hashed_password)
     db.add(new_user)
     try:
@@ -115,6 +116,7 @@ def create_book_genre(db: Session, user_id: int, book_id: int, genre_id: int):
     db.commit()
     db.refresh(db_book_genre)
     return db_book_genre
+
 
 def get_tag_by_name(db: Session, name: str):
     # タグを取得するcrud処理

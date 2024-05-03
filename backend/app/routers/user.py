@@ -54,7 +54,7 @@ def create_user_endpoint(user: schemas.UserCreate, db: Session = Depends(get_db)
     if db_user:
         raise HTTPException(status_code=400, detail="Username already registered")
     return crud.create_user(db=db, user=user)
-    
+
 
 # ログイン
 @router.post("/login")
