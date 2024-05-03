@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List
 
 class UserBase(BaseModel):
@@ -9,8 +9,8 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     # UserCreate クラスは UserBase を継承しており、UserBase に定義された属性に加えて追加の属性を定義できる
-    password: str
-    confirm_password: str #ここに確認用パスワード追加
+    password: str = Field(min_length=8)
+    confirm_password: str = Field(min_length=8)#ここに確認用パスワード追加
 
 class User(UserBase):
     id:int
