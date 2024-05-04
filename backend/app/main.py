@@ -8,6 +8,7 @@ from .schemas import User
 from .routers.user import router as user_router
 from .routers.signup import router as signup_router
 from .routers.login import router as login_router
+from .routers.logout import router as logout_router
 from .routers.create_book import router as create_book_router
 
 # models.Base.metadata.create_all(bind=engine)
@@ -18,6 +19,7 @@ app = FastAPI()
 app.include_router(user_router, prefix="/user", tags=["user"])
 app.include_router(signup_router, prefix="/api/signup", tags=["signup"])
 app.include_router(login_router, prefix="/api/login", tags=["login"])
+app.include_router(logout_router, prefix="/api/logout", tags=["logout"])
 app.include_router(create_book_router, prefix="/api/books", tags=["create_book"])
 
 
