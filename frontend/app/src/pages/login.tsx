@@ -26,26 +26,26 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
     fetch("/api/login", {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-    .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Login failed');
+          throw new Error("Login failed");
         }
         return response.json();
       })
-    .then(data => {
-        console.log('Login success:', data);
-        navigate('/dashboard');
+      .then((data) => {
+        console.log("Login success:", data);
+        navigate("/dashboard");
       })
-    .catch(error => {
-        console.log('Login error:', error)
-      })
-  }
+      .catch((error) => {
+        console.log("Login error:", error);
+      });
+  };
 
   return (
     <div>

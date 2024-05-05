@@ -1,9 +1,9 @@
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from "msw";
 
 export const handlers = [
-  http.post('/api/login', async ({ request }) => {
-    const loginForm = await request.json()
+  http.post("/api/login", async ({ request }) => {
+    const loginForm = await request.json();
 
-    return HttpResponse.json(loginForm, { status: 200 })
-  })
-]
+    return HttpResponse.json(loginForm, { status: 200 });
+  }),
+];
