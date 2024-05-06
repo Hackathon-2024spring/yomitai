@@ -26,11 +26,11 @@ class Login(BaseModel):
 
 
 class DailyLog(BaseModel):
+    title: str
     page_read: int
     date: date
+    memo: str
     created_at: datetime
-    user_id: int
-    book_id: int
 
     class Config:
         orm_mode = True
@@ -81,6 +81,23 @@ class BookGenre(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+class ReadBookRequest(BaseModel):
+    title: str
+    page_read: int
+    memo: str
+    reading_date: date
+    created_at: datetime
+    updated_at: datetime
+   
+
+class DailyLog(BaseModel):
+    title: str
+    page_read: int
+    memo: str
+    reading_date: date
+    created_at: datetime
+    updated_at: datetime
+
 class BookMemo(BaseModel):
     memo: str
     created_at: datetime
@@ -105,43 +122,3 @@ class AwardCriteria(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-
-
-
-
-
-
-# class TaskBase(BaseModel):
-#     title: str
-#     done: bool = False
-
-
-# class TaskCreate(TaskBase):
-#     pass
-
-
-# class Task(TaskBase):
-#     id: int
-#     created_at: datetime
-#     updated_at: datetime
-#     user_id: int
-
-#     class Config:
-#         orm_mode = True
-
-
-# class UserBase(BaseModel):
-#     name: str
-
-
-# class UserCreate(UserBase):
-#     pass
-
-
-# class User(UserBase):
-#     id: int
-#     created_at: datetime
-#     tasks: list[Task] = []
-
-#     class Config:
-#         orm_mode = True
