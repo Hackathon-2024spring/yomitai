@@ -26,7 +26,7 @@ export default function Login() {
 
   return (
     <>
-      <div className="h-screen w-screen flex flex-col md:flex-row items-center flex-grow bg-yellow-50 divide-x divide-gray-400">
+      <div className="h-screen w-screen flex flex-col md:flex-row items-center flex-grow bg-yellow-50 md:divide-x divide-gray-400">
         <div className="flex flex-col items-center">
           <div className="italic font-black text-9xl text-gray-200 mx-8 mt-8">
             Yomitai
