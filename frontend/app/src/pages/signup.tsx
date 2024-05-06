@@ -2,6 +2,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
 type SignupForm = {
   username: string;
@@ -27,13 +28,36 @@ const SignupScheme: z.ZodType<SignupForm> = z
   });
 
 export default function Signup() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignupForm>({ resolver: zodResolver(SignupScheme) });
 
-  const onSubmit: SubmitHandler<SignupForm> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<SignupForm> = (data) => {
+    fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Signup failed");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Signup success:", data);
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        console.log("Signup error:", error);
+      });
+  };
 
   return (
     <>
