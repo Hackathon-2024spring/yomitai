@@ -196,19 +196,3 @@ def create_log(db: Session, user_id: int, book_id: int, page_read: int, reading_
     db.add(new_memo)
 
     db.commit()
-
-#セッション情報からemailを取得
-def get_user_email_from_session(session_id: str, db: Session) -> str:
-    # セッションIDがsessions辞書にない場合は未認証として扱う
-    if session_id not in sessions:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="セッションが無効")
-
-    # セッションからユーザーIDを取得
-    user_id = sessions[session_id]
-
-    # データベースからユーザーIDに対応するユーザー情報を取得
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="ユーザーが見つかりません")
-
-    return user.email
