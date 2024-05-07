@@ -5,12 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 
 type LoginForm = {
-  username: string;
+  user_name: string;
   password: string;
 };
 
 const LoginScheme: z.ZodType<LoginForm> = z.object({
-  username: z.string().min(1, { message: "ユーザー名を入力してください" }),
+  user_name: z.string().min(1, { message: "ユーザー名を入力してください" }),
   password: z
     .string()
     .min(8, { message: "8文字以上のパスワードを入力してください" }),
@@ -69,18 +69,18 @@ export default function Login() {
             >
               <div className="container mb-4 flex flex-col items-center">
                 <input
-                  id="username"
-                  {...register("username", { required: true })}
+                  id="user-name"
+                  {...register("user_name", { required: true })}
                   placeholder="Username"
                   className="rounded-lg border p-2 text-center"
                 />
                 {/* エラーメッセージがあれば表示、なければ非表示要素を配置。要素の位置ずれ防止のため。 */}
-                {errors.username && (
+                {errors.user_name && (
                   <div className="mt-1 text-red-500">
-                    {errors.username.message}
+                    {errors.user_name.message}
                   </div>
                 )}
-                {!errors.username && (
+                {!errors.user_name && (
                   <div className="invisible mt-1 text-red-500">*</div>
                 )}
               </div>
