@@ -2,6 +2,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
 type SignupForm = {
   username: string;
@@ -27,19 +28,42 @@ const SignupScheme: z.ZodType<SignupForm> = z
   });
 
 export default function Signup() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignupForm>({ resolver: zodResolver(SignupScheme) });
 
-  const onSubmit: SubmitHandler<SignupForm> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<SignupForm> = (data) => {
+    fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Signup failed");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Signup success:", data);
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        console.log("Signup error:", error);
+      });
+  };
 
   return (
     <>
-      <div className="h-screen w-screen flex flex-col md:flex-row items-center flex-grow bg-yellow-50 md:divide-x divide-gray-400">
+      <div className="flex h-screen w-screen flex-grow flex-col items-center divide-gray-400 bg-yellow-50 md:flex-row md:divide-x">
         <div className="flex flex-col items-center">
-          <div className="italic font-black text-9xl text-gray-200 mx-8 mt-8">
+          <div className="mx-8 mt-8 text-9xl font-black italic text-gray-200">
             Yomitai
           </div>
           <img
@@ -49,69 +73,69 @@ export default function Signup() {
           />
         </div>
         <div className="container flex flex-col items-center">
-          <h1 className="text-5xl mb-4 text-gray-700 text-center">Signup</h1>
+          <h1 className="mb-4 text-center text-5xl text-gray-700">Signup</h1>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col items-center p-8"
           >
-            <div className="mb-2 container flex flex-col items-center">
+            <div className="container mb-2 flex flex-col items-center">
               <input
                 id="username"
                 {...register("username", { required: true })}
                 placeholder="Username"
-                className="border rounded-lg p-2 text-center"
+                className="rounded-lg border p-2 text-center"
               />
               {/* エラーメッセージがあれば表示、なければ非表示要素を配置。要素の位置ずれ防止のため。 */}
               {errors.username && (
-                <div className="text-red-500 mt-1">
+                <div className="mt-1 text-red-500">
                   {errors.username.message}
                 </div>
               )}
               {!errors.username && (
-                <div className="text-red-500 mt-1 invisible">*</div>
+                <div className="invisible mt-1 text-red-500">*</div>
               )}
             </div>
-            <div className="mb-2 container flex flex-col items-center">
+            <div className="container mb-2 flex flex-col items-center">
               <input
                 id="email"
-                className="border rounded-lg p-2 text-center"
+                className="rounded-lg border p-2 text-center"
                 {...register("email", { required: true })}
                 placeholder="Email"
               />
               {errors.email && (
-                <div className="text-red-500 mt-1">{errors.email.message}</div>
+                <div className="mt-1 text-red-500">{errors.email.message}</div>
               )}
               {!errors.email && (
-                <div className="text-red-500 mt-1 invisible">*</div>
+                <div className="invisible mt-1 text-red-500">*</div>
               )}
             </div>
-            <div className="mb-2 container flex flex-col items-center">
+            <div className="container mb-2 flex flex-col items-center">
               <input
                 id="password"
-                className="border rounded-lg p-2 text-center"
+                className="rounded-lg border p-2 text-center"
                 {...register("password", { required: true })}
                 type="password"
                 placeholder="Password"
               />
               {errors.password && (
-                <div className="text-red-500 mt-1">
+                <div className="mt-1 text-red-500">
                   {errors.password.message}
                 </div>
               )}
               {!errors.password && (
-                <div className="text-red-500 mt-1 invisible">*</div>
+                <div className="invisible mt-1 text-red-500">*</div>
               )}
             </div>
-            <div className="mb-2 container flex flex-col items-center">
+            <div className="container mb-2 flex flex-col items-center">
               <input
                 id="confirm-password"
-                className="border rounded-lg p-2 text-center"
+                className="rounded-lg border p-2 text-center"
                 {...register("confirmPassword", { required: true })}
                 type="password"
                 placeholder="Confirm Password"
               />
               {errors.confirmPassword && (
-                <div className="text-red-500 mt-1">
+                <div className="mt-1 text-red-500">
                   {errors.confirmPassword.message}
                 </div>
               )}
@@ -123,19 +147,19 @@ export default function Signup() {
                   <div>{errors.confirmPassword.message}</div>
                 )}
               {!errors.confirmPassword && (
-                <div className="text-red-500 mt-1 invisible">*</div>
+                <div className="invisible mt-1 text-red-500">*</div>
               )}
             </div>
             <button
               type="submit"
-              className="text-white bg-green-500 mt-2 py-2 px-6 rounded text-lg hover:bg-green-600 duration-300 mx-auto"
+              className="mx-auto mt-2 rounded bg-green-500 px-6 py-2 text-lg text-white duration-300 hover:bg-green-600"
             >
               サインアップ
             </button>
           </form>
           <Link
             to="/login"
-            className="text-gray-600 border-b border-gray-600 hover:text-green-500 hover:border-green-500 my-2"
+            className="my-2 border-b border-gray-600 text-gray-600 hover:border-green-500 hover:text-green-500"
           >
             ログインはこちら
           </Link>

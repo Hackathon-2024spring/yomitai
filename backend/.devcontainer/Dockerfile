@@ -5,7 +5,7 @@ FROM python:3.9
 ENV PYTHONUNBUFFERED 1
 
 # Poetry をインストール
-RUN pip install poetry sqlalchemy pymysql alembic mysqlclient
+RUN pip install poetry sqlalchemy pymysql alembic mysqlclient passlib
 # 作業ディレクトリを設定
 WORKDIR /workspace
 

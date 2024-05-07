@@ -1,16 +1,19 @@
 from fastapi import APIRouter, HTTPException, Depends, Response, status
 from sqlalchemy.orm import Session
-from .. import crud, models, schemas, database
+from .. import database
 from ..auth import authenticate_user
+from ..schemas import Login
 import secrets
+from ..session_store import sessions  # session_store.pyからsessions辞書をインポート
+
 
 router = APIRouter()
 
 @router.post("/")
 
-def login(user_name: str, password: str, response: Response, db: Session = Depends(database.get_db)):
+def login(login_data: Login, response: Response, db: Session = Depends(database.get_db)):
     # ユーザー認証
-    user = authenticate_user(db, user_name, password)
+    user = authenticate_user(db, login_data.user_name, login_data.password)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
 
@@ -18,10 +21,7 @@ def login(user_name: str, password: str, response: Response, db: Session = Depen
     session_id = secrets.token_urlsafe()
     response.set_cookie(key="session_id", value=session_id, httponly=True, secure=True, samesite='Lax')
 
-    return {"message": "Login successful!"}
+    # セッションIDに対応するユーザーIDをインメモリストアに保存
+    sessions[session_id] = user.id  # user.idは認証されたユーザーのID
 
-@router.post("/logout")
-def logout(response: Response):
-    # クッキーからセッションIDを削除
-    response.delete_cookie("session_id")
-    return {"message": "Logged out"}
+    return {"message": "Login successful!"}
