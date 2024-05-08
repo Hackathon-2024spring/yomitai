@@ -5,24 +5,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 
 type SignupForm = {
-  username: string;
+  user_name: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  confirm_password: string;
 };
 
 const SignupScheme: z.ZodType<SignupForm> = z
   .object({
-    username: z.string().min(1, { message: "ユーザー名を入力してください" }),
+    user_name: z.string().min(1, { message: "ユーザー名を入力してください" }),
     email: z.string().email({ message: "メールアドレスを入力してください" }),
     password: z
       .string()
       .min(8, { message: "8文字以上のパスワードを入力してください" }),
-    confirmPassword: z
+    confirm_password: z
       .string()
       .min(8, { message: "パスワードを再入力してください" }),
   })
-  .refine((value) => value.password === value.confirmPassword, {
+  .refine((value) => value.password === value.confirm_password, {
     message: "パスワードが一致しません",
     path: ["confirmPassword"],
   });
@@ -80,18 +80,18 @@ export default function Signup() {
           >
             <div className="container mb-2 flex flex-col items-center">
               <input
-                id="username"
-                {...register("username", { required: true })}
+                id="user-name"
+                {...register("user_name", { required: true })}
                 placeholder="Username"
                 className="rounded-lg border p-2 text-center"
               />
               {/* エラーメッセージがあれば表示、なければ非表示要素を配置。要素の位置ずれ防止のため。 */}
-              {errors.username && (
+              {errors.user_name && (
                 <div className="mt-1 text-red-500">
-                  {errors.username.message}
+                  {errors.user_name.message}
                 </div>
               )}
-              {!errors.username && (
+              {!errors.user_name && (
                 <div className="invisible mt-1 text-red-500">*</div>
               )}
             </div>
@@ -130,23 +130,23 @@ export default function Signup() {
               <input
                 id="confirm-password"
                 className="rounded-lg border p-2 text-center"
-                {...register("confirmPassword", { required: true })}
+                {...register("confirm_password", { required: true })}
                 type="password"
                 placeholder="Confirm Password"
               />
-              {errors.confirmPassword && (
+              {errors.confirm_password && (
                 <div className="mt-1 text-red-500">
-                  {errors.confirmPassword.message}
+                  {errors.confirm_password.message}
                 </div>
               )}
               {/* {!errors.confirmPassword && (
                 <div className="text-red-500 mt-1 invisible">*</div>
               )} */}
-              {errors.confirmPassword &&
-                errors.confirmPassword.type === "refine" && (
-                  <div>{errors.confirmPassword.message}</div>
+              {errors.confirm_password &&
+                errors.confirm_password.type === "refine" && (
+                  <div>{errors.confirm_password.message}</div>
                 )}
-              {!errors.confirmPassword && (
+              {!errors.confirm_password && (
                 <div className="invisible mt-1 text-red-500">*</div>
               )}
             </div>
