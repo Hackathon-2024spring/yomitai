@@ -121,7 +121,7 @@ function Header() {
       </nav>
       <Link
         to="/login"
-        className="my-2 rounded bg-green-500 px-2 py-1 text-lg text-white duration-300 hover:bg-green-600"
+        className="my-2 rounded-xl bg-green-400 px-2 py-1 text-lg text-white duration-300 hover:bg-green-500"
       >
         ログアウト
       </Link>

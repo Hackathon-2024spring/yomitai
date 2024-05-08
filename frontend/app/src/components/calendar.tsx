@@ -307,7 +307,10 @@ export const ScheduleCalendar = (props: ScheduleCalendarProps) => {
   return (
     <div
       id={id}
-      className={cn("flex w-[100%] flex-col bg-green-100", className)}
+      className={cn(
+        "flex w-[100%] flex-col rounded-xl bg-green-100",
+        className,
+      )}
     >
       <div className="calendar-header mb-3 flex w-[100%] items-center justify-between px-1 text-gray-700">
         <div className="buttons mt-1 flex items-center gap-5 text-sm font-black">
