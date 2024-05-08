@@ -5,7 +5,8 @@ from . import models, schemas
 from .schemas import Book
 from passlib.context import CryptContext
 from .auth import hash_password  # auth.pyからハッシュ化関数をインポート
-from fastapi import HTTPException
+from fastapi import HTTPException, status
+from .session_store import sessions
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -21,13 +22,6 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
-
-
-# パスワードのハッシュ化設定
-# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# def hash_password(password: str) -> str:
-#     return pwd_context.hash(password)
 
 def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = hash_password(user.password)
@@ -174,7 +168,7 @@ def create_log(db: Session, user_id: int, book_id: int, page_read: int, reading_
         models.Daily_log.user_id == user_id,
         models.Daily_log.book_id == book_id
     ).scalar() or 0
-    
+
     page_read_today = page_read - total_read_pages
 
     book = db.query(models.Book).filter(models.Book.id == book_id).first()
@@ -185,7 +179,7 @@ def create_log(db: Session, user_id: int, book_id: int, page_read: int, reading_
         ).first()
         if reading_session:
             reading_session.end_date = datetime.today()
-    
+
     new_log = models.Daily_log(
         user_id=user_id,
         book_id=book_id,
@@ -193,12 +187,12 @@ def create_log(db: Session, user_id: int, book_id: int, page_read: int, reading_
         date=reading_date
     )
     db.add(new_log)
-    
+
     new_memo = models.Book_memo(
         user_id=user_id,
         book_id=book_id,
         memo=memo_text
     )
     db.add(new_memo)
-    
+
     db.commit()

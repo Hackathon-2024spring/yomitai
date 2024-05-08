@@ -20,6 +20,7 @@ def read_book(request: Request, daily_log: schemas.ReadBookRequest, db: Session 
         raise HTTPException(status_code=404, detail="Book not found")
 
     crud.create_log(
+
         db=db,
         user_id=user_id,
         book_id=book.id,
@@ -27,5 +28,5 @@ def read_book(request: Request, daily_log: schemas.ReadBookRequest, db: Session 
         reading_date=daily_log.reading_date,
         memo_text=f"{daily_log.reading_date}: {daily_log.memo}"
     )
-    
+
     return {"message": "Reading log and memo saved successfully"}
