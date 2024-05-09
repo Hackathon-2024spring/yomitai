@@ -18,27 +18,29 @@ export default function Home() {
             <div className="flex flex-col items-center p-4">
               <div
                 className="relative m-auto h-28
-                  w-96 transform rounded-xl bg-green-100 text-gray-600 shadow-md transition-transform hover:scale-95"
+                  w-96 transform rounded-xl bg-green-100 text-gray-600 shadow-md transition-transform hover:scale-105"
               >
                 <div className="w-full p-4">
                   <div className="flex ">
-                    <div>
+                    <div className="mr-2">
                       <img
                         src="../img/book_tailwind.jpg"
                         alt="description"
                         className="h-20"
                       />
                     </div>
-                    <div>
+                    <div className="flex flex-col">
                       <div className="mx-2 font-light">
                         tailwindcss 実践入門
                       </div>
-                      <div className="mx-2 mt-2 w-auto bg-blue-50">
-                        <div
-                          className="bg-green-600 p-1 text-center text-xs leading-none text-white"
-                          style={{ width: "65%" }}
-                        >
-                          65%
+                      <div>
+                        <div className="mx-2 mt-2 w-auto bg-blue-50">
+                          <div
+                            className="bg-green-600 p-1 text-center text-xs leading-none text-white"
+                            style={{ width: "65%" }}
+                          >
+                            65%
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -47,11 +49,11 @@ export default function Home() {
               </div>
               <div
                 className="relative m-2 h-28
-                  w-96 transform rounded-xl bg-green-100 text-gray-600 shadow-md transition-transform hover:scale-95"
+                  w-96 transform rounded-xl bg-green-100 text-gray-600 shadow-md transition-transform hover:scale-105"
               >
                 <div className="w-full p-4">
                   <div className="flex ">
-                    <div>
+                    <div className="mr-2">
                       <img
                         src="../img/book_leadablecode.jpeg"
                         alt="description"
@@ -60,12 +62,14 @@ export default function Home() {
                     </div>
                     <div>
                       <div className="mx-2 font-light">リーダブルコード</div>
-                      <div className="mx-2 mt-2 w-full bg-pink-300">
-                        <div
-                          className="bg-green-600 p-1 text-center text-xs leading-none text-white"
-                          style={{ width: "65%" }}
-                        >
-                          65%
+                      <div>
+                        <div className="mx-2 mt-2 w-full bg-pink-300">
+                          <div
+                            className="bg-green-600 p-1 text-center text-xs leading-none text-white"
+                            style={{ width: "65%" }}
+                          >
+                            65%
+                          </div>
                         </div>
                       </div>
                     </div>
