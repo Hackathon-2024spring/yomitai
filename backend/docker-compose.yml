@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   app:
+    container_name: yomitai_app
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
@@ -19,12 +20,13 @@ services:
       - db
 
   db:
+    container_name: yomitai_db
     image: mysql:latest
     restart: unless-stopped
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./db/init:/docker-entrypoint-initdb.d
-      - ./sql/my.cnf:/mysql/conf.d/my.cnf
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
       MYSQL_ROOT_PASSWORD: mysql
       MYSQL_DB: mysql
