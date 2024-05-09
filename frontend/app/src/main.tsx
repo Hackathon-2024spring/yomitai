@@ -5,6 +5,7 @@ import "./index.css";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
+import Modals from "./pages/modals";
 
 async function enableMocking() {
   if (!import.meta.env.DEV) {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <Signup />,
   },
+  {
+    path: "/modals",
+    element: <Modals />,
+  }
 ]);
 
 enableMocking().then(() => {
