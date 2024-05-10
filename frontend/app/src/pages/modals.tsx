@@ -1,5 +1,5 @@
-import BarcodeReader from "../components/barcodeReader"
-import BookRegisterForm from "../components/bookRegisterForm"
+import BarcodeReader from "../components/barcodeReader";
+import BookRegisterForm from "../components/bookRegisterForm";
 
 export default function Modals() {
   return (
@@ -7,5 +7,5 @@ export default function Modals() {
       <BarcodeReader />
       <BookRegisterForm />
     </>
-  )
+  );
 }

@@ -1,4 +1,14 @@
-import { Button, Dialog, DialogPanel, DialogTitle, Field, Fieldset, Input, Label, Select } from "@headlessui/react";
+import {
+  Button,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Field,
+  Fieldset,
+  Input,
+  Label,
+  Select,
+} from "@headlessui/react";
 import { useState } from "react";
 
 export default function BookRegisterForm() {
@@ -7,7 +17,11 @@ export default function BookRegisterForm() {
   return (
     <>
       <Button onClick={() => setIsOpen(true)}>Open Book Register Form</Button>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className="relative z-50"
+      >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
           <DialogPanel>
             <DialogTitle>書籍情報登録</DialogTitle>
@@ -52,5 +66,5 @@ export default function BookRegisterForm() {
         </div>
       </Dialog>
     </>
-  )
+  );
 }
