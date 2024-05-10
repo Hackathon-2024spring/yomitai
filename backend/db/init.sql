@@ -14,109 +14,11 @@ USE yomitai;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_name VARCHAR(255),
-    password VARCHAR(255),
+    user_name VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    created_at datetime DEFAULT CURRENT_timestamp,
-    updated_at datetime DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp
-);
-
-CREATE TABLE books (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255),
-    author VARCHAR(255),
-    publisher VARCHAR(255),
-    total_page INT,
-    isbn_code VARCHAR(20),
-    image VARCHAR(255),
-    created_at datetime DEFAULT CURRENT_timestamp,
-    updated_at datetime DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp
-);
-
-CREATE TABLE tags (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255),
-    is_shared BOOLEAN,
-    create_user_id INT,
-    created_at datetime DEFAULT CURRENT_timestamp,
-    FOREIGN KEY (create_user_id) REFERENCES users(id)
-);
-
-CREATE TABLE daily_logs (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    book_id INT,
-    page_read INT,
-    date DATE,
-    created_at datetime DEFAULT CURRENT_timestamp,
-    updated_at datetime DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (book_id) REFERENCES books(id)
-);
-
-CREATE TABLE book_tags (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    book_id INT,
-    tag_id INT,
-    user_id INT,
-    created_at datetime DEFAULT CURRENT_timestamp,
-    updated_at datetime DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp,
-    FOREIGN KEY (book_id) REFERENCES books(id),
-    FOREIGN KEY (tag_id) REFERENCES tags(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
-CREATE TABLE reading_sessions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    book_id INT,
-    start_date DATE,
-    planned_end_date DATE,
-    end_date DATE,
-    created_at datetime DEFAULT CURRENT_timestamp,
-    updated_at datetime DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (book_id) REFERENCES books(id)
-);
-
-CREATE TABLE book_memos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    book_id INT,
-    memo TEXT,
-    created_at datetime DEFAULT CURRENT_timestamp,
-    updated_at datetime DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (book_id) REFERENCES books(id)
-);
-
-CREATE TABLE awards (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255),
-    description VARCHAR(255),
-    created_at datetime DEFAULT CURRENT_timestamp,
-    updated_at datetime DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp
-);
-
-CREATE TABLE user_awards (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    award_id INT,
-    award_date DATE,
-    created_at datetime DEFAULT CURRENT_timestamp,
-    updated_at datetime DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (award_id) REFERENCES awards(id)
-);
-
-CREATE TABLE award_criteria (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    award_id INT,
-    type VARCHAR(255),
-    value INT,
-    created_at datetime DEFAULT CURRENT_timestamp,
-    updated_at datetime DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp,
-    FOREIGN KEY (award_id) REFERENCES awards(id)
+    created_at Datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE genres (
@@ -124,17 +26,86 @@ CREATE TABLE genres (
     name VARCHAR(255)
 );
 
-CREATE TABLE book_genres (
+CREATE TABLE books (
     id INT AUTO_INCREMENT PRIMARY KEY,
     genre_id INT,
-    book_id INT,
-    user_id INT,
-    created_at datetime DEFAULT CURRENT_timestamp,
-    updated_at datetime DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp,
-    FOREIGN KEY (genre_id) REFERENCES genres(id),
-    FOREIGN KEY (book_id) REFERENCES books(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    title VARCHAR(255),
+    author VARCHAR(255),
+    publisher VARCHAR(255),
+    total_page INT,
+    isbn_code VARCHAR(20),
+    image VARCHAR(255),
+    created_at Datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (genre_id) REFERENCES genres(id)
 );
+
+CREATE TABLE my_books (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    book_id INT NULL,
+    genre_id INT NULL,
+    title VARCHAR(255),
+    author VARCHAR(255),
+    publisher VARCHAR(255),
+    total_page INT,
+    image VARCHAR(255),
+    start_date date,
+    planned_end_date date,
+    end_date date NULL,
+    created_at Datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (book_id) REFERENCES books(id),
+    FOREIGN KEY (genre_id) REFERENCES genres(id)
+);
+
+CREATE TABLE daily_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    my_book_id INT,
+    page_read INT,
+    date DATE,
+    memo TEXT NULL,
+    created_at Datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (my_book_id) REFERENCES my_books(id)
+);
+
+CREATE TABLE tags (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tag_name VARCHAR(255),
+    created_at Datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE book_tags (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    my_book_id INT,
+    tag_id INT,
+    created_at Datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (my_book_id) REFERENCES my_books(id),
+    FOREIGN KEY (tag_id) REFERENCES tags(id)
+);
+
+CREATE TABLE awards (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    award_name VARCHAR(255),
+    created_at Datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user_awards (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    award_id INT,
+    award_date DATE,
+    created_at Datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (award_id) REFERENCES awards(id)
+);
+
 
 INSERT INTO genres(name)VALUES('総記');
 INSERT INTO genres(name)VALUES('百科事典');
@@ -213,6 +184,29 @@ INSERT INTO genres(name)VALUES('日本文学小説・物語');
 INSERT INTO genres(name)VALUES('日本文学評論・随筆・その他');
 INSERT INTO genres(name)VALUES('外国文学小説');
 INSERT INTO genres(name)VALUES('外国文学その他');
+
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数３日','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数７日','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数１５日','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数３０日','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数１００日','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数３６５日','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書回数１回','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書回数１０回','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書回数１００回','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書ページ１００ページ','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書回数１０００ページ','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書回数５０００ページ','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書１冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書３冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書５冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書１０冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書２０冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書３０冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書４０冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書５０冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書１００冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
+
 
 INSERT INTO users(user_name,password,email,created_at,updated_at)value('1111','$2b$12$al3GHbWL7Tu0pohp4WRxCeTaGkppYocjDp2gcOFhIkjq36Ww1quq.','1111','2024-05-06 12:04:36','2024-05-06 12:04:36');
 INSERT INTO users(user_name,password,email,created_at,updated_at)value('2222','$2b$12$uEkmd2y2sZ/rzq1AW/Lcl.DaoSkKkSidJXu6qLnQW54HqZNXtd9WW','2222','2024-05-06 12:04:36','2024-05-06 12:04:36');
