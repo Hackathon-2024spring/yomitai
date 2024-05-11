@@ -33,7 +33,7 @@ const router = createBrowserRouter([
   {
     path: "/modals",
     element: <Modals />,
-  }
+  },
 ]);
 
 enableMocking().then(() => {
