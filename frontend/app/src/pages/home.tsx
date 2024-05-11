@@ -1,4 +1,5 @@
 import Header from "../components/Header";
+import BarcodeReader from "../components/barcodeReader";
 import { CalendarComponent } from "../components/calendarComponent";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
           <div className="w-1/2 md:w-1/2 lg:max-w-lg">
             {/* book card(あとでコンポーネント化) */}
             <div className="flex flex-col items-center p-4">
+              {/* カード要素：ここを自動で増やしたい */}
               <div
                 className="relative m-auto h-28
                   w-96 transform rounded-xl bg-green-100 text-gray-600 shadow-md transition-transform hover:scale-105"
@@ -76,9 +78,10 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <button className="boder-0 m-4 rounded-xl bg-green-400 px-6 py-2 text-lg text-white duration-300 hover:bg-green-500">
+              <BarcodeReader />
+              {/* <button className="boder-0 m-4 rounded-xl bg-green-400 px-6 py-2 text-lg text-white duration-300 hover:bg-green-500" >
                 書籍登録
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

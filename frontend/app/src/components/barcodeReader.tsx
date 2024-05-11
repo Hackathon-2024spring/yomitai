@@ -37,14 +37,19 @@ export default function BarcodeReader() {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)}>Open Barcord Reader</Button>
+      <Button
+        className="boder-0 m-4 rounded-xl bg-green-400 px-6 py-2 text-lg text-white duration-300 hover:bg-green-500"
+        onClick={() => setIsOpen(true)}
+      >
+        書籍登録
+      </Button>
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel>
+          <DialogPanel className="bg-cyan-100 backdrop:bg-gray-900">
             <DialogTitle>書類情報登録</DialogTitle>
             <p>本のバーコードを撮影してアップロードしてください</p>
             <div>
