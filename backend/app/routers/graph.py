@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from datetime import datetime
 from ..database import get_db
@@ -10,12 +10,19 @@ from app.calculation import (
     calculate_genre_distribution_monthly,
     calculate_genre_distribution_yearly
     )
+from ..session_store import sessions
 
 router = APIRouter()
 
 @router.get("/")
 
-def get_reading_statistics(user_id: int, start_date: str, end_date: str, period: str, db: Session = Depends(get_db)):
+def get_reading_statistics(request: Request, start_date: str, end_date: str, period: str, db: Session = Depends(get_db)):
+    session_id = request.cookies.get("session_id")
+    if session_id not in sessions:
+        raise HTTPException(status_code=401, detail="未承認またはセッションが無効")
+
+    user_id= sessions[session_id]
+
     try:
         # 日付を適切に処理
         start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
@@ -49,3 +56,4 @@ def get_reading_statistics(user_id: int, start_date: str, end_date: str, period:
         raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
