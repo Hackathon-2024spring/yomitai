@@ -23,12 +23,6 @@ def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
 
-# パスワードのハッシュ化設定
-# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# def hash_password(password: str) -> str:
-#     return pwd_context.hash(password)
-
 def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = hash_password(user.password)
     user_data = user.dict()
