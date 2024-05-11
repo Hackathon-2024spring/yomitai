@@ -26,7 +26,7 @@ def process_book_registration(request: Request,book: schemas.CreateBook, db: Ses
     genre_id = genre.id if genre else None  # ジャンルが見つからない場合はNoneを使用
 
 
-    if book.isbn_code != "":
+    if book.isbn_code != None:
         # ISBNに合致するbooksレコードを取得
         db_book = crud.get_book_by_isbn(db, isbn=book.isbn_code)
         # デバック用

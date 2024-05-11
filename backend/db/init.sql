@@ -23,7 +23,7 @@ CREATE TABLE users (
 
 CREATE TABLE genres (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255)
+    name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE books (
@@ -33,7 +33,7 @@ CREATE TABLE books (
     author VARCHAR(255),
     publisher VARCHAR(255),
     total_page INT,
-    isbn_code VARCHAR(20),
+    isbn_code INT,
     image VARCHAR(255),
     created_at Datetime DEFAULT CURRENT_TIMESTAMP,
     updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -42,16 +42,16 @@ CREATE TABLE books (
 
 CREATE TABLE my_books (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
+    user_id INT NOT NULL,
     book_id INT NULL,
     genre_id INT NULL,
-    title VARCHAR(255),
-    author VARCHAR(255),
-    publisher VARCHAR(255),
-    total_page INT,
-    image VARCHAR(255),
-    start_date date,
-    planned_end_date date,
+    title VARCHAR(255) NULL,
+    author VARCHAR(255) NULL,
+    publisher VARCHAR(255) NULL,
+    total_page INT NULL,
+    image VARCHAR(255) NULL,
+    start_date date NOT NULL,
+    planned_end_date date NOT NULL,
     end_date date NULL,
     created_at Datetime DEFAULT CURRENT_TIMESTAMP,
     updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -104,6 +104,13 @@ CREATE TABLE user_awards (
     updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (award_id) REFERENCES awards(id)
+);
+
+CREATE TABLE sessions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    session_id_value VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 
@@ -212,6 +219,17 @@ INSERT INTO users(user_name,password,email,created_at,updated_at)value('1111','$
 INSERT INTO users(user_name,password,email,created_at,updated_at)value('2222','$2b$12$uEkmd2y2sZ/rzq1AW/Lcl.DaoSkKkSidJXu6qLnQW54HqZNXtd9WW','2222','2024-05-06 12:04:36','2024-05-06 12:04:36');
 INSERT INTO users(user_name,password,email,created_at,updated_at)value('3333','$2b$12$NERZd7FRGKOtgdhfg.q7yugcUCWaWgC9I5UZPTkLol.fMtIvn8FP2','3333','2024-05-06 12:04:36','2024-05-06 12:04:36');
 
+INSERT INTO books(genre_id,title,author,publisher, total_page, isbn_code, image, created_at,updated_at)value(10,'テスト用データ','著者','出版社',600,1234556789,'null','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO my_books(user_id, book_id,genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(2,1,13,'テスト用データ2','著者','出版社',600,'2024-05-01','2024-05-20');
+INSERT INTO my_books(user_id, book_id,genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(2,1,13,'テスト用データ3','著者','出版社',347,'2024-05-03','2024-05-30');
+INSERT INTO tags(tag_name)value('試験用タグ');
+INSERT INTO tags(tag_name)value('試験用タグ2');
+INSERT INTO tags(tag_name)value('試験用タグ3');
+INSERT INTO book_tags(my_book_id, tag_id)value(1,1);
+INSERT INTO book_tags(my_book_id, tag_id)value(1,3);
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,40,'2024-05-10','読書1回目');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,30,'2024-05-10','読書2回目');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,20,'2024-05-11','読書3回目');
 
 -- 権限設定の更新
 FLUSH PRIVILEGES;
