@@ -67,7 +67,7 @@ class Book(BookBase):
 
 
 class CreateBook(MyBook):
-    isbn_code: Optional[str] = None
+    isbn_code: Optional[int] = None
     genre: str
     tag: Optional[list] = []
 
