@@ -160,7 +160,7 @@ const ScheduleItem = ({ color }: { color?: string }) => {
 const WeekHeader = ({ startOnMonday }: { startOnMonday?: boolean }) => {
   // const monday = startOnMonday ?? true;
   return (
-    <div className="week-header z-[999] z-[99] grid w-[100%] grid-cols-7 border-b border-white text-center text-sm text-sm font-bold shadow-sm">
+    <div className="week-header grid w-[100%] grid-cols-7 border-b border-white text-center text-sm font-bold shadow-sm">
       {startOnMonday ? null : (
         <span className="py-3 text-xs text-red-400">Sun</span>
       )}

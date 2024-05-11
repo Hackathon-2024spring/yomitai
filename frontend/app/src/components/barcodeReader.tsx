@@ -46,18 +46,39 @@ export default function BarcodeReader() {
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        className="relative z-50"
+        className="relative z-50 "
       >
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="bg-cyan-100 backdrop:bg-gray-900">
-            <DialogTitle>書類情報登録</DialogTitle>
-            <p>本のバーコードを撮影してアップロードしてください</p>
-            <div>
-              <input type="file" accept="image/" onChange={handleChange} />
-              <Button onClick={decodeBarcode}>バーコードを読み取る</Button>
-              <p>バーコードデータ: {barcode}</p>
-              <Button>フォームから入力する</Button>
-              <Button onClick={() => setIsOpen(false)}>キャンセル</Button>
+        <div className="fixed inset-0 flex w-screen items-center justify-center bg-black/30 p-4">
+          <DialogPanel className="flex h-auto w-auto flex-col rounded-xl bg-cyan-100 backdrop:bg-gray-900">
+            <DialogTitle className="m-4 text-center text-lg text-gray-700 underline underline-offset-8">
+              書籍情報登録
+            </DialogTitle>
+            <p className="mx-auto my-4 p-4 text-gray-700">
+              本のバーコードを撮影してアップロードしてください
+            </p>
+            <div className="m-2 flex flex-col text-gray-700">
+              <input
+                className="m-4"
+                type="file"
+                accept="image/"
+                onChange={handleChange}
+              />
+              <p className="m-4 underline ">バーコードデータ: {barcode}</p>
+              <Button
+                className="boder-0 m-4 rounded-xl bg-cyan-400 px-6 py-2 text-lg text-white duration-300 hover:bg-cyan-500"
+                onClick={decodeBarcode}
+              >
+                バーコードを読み取る
+              </Button>
+              <Button className="boder-0 m-4 rounded-xl bg-cyan-400 px-6 py-2 text-lg text-white duration-300 hover:bg-cyan-500">
+                フォームから入力する
+              </Button>
+              <Button
+                className="boder-0 m-4 rounded-xl bg-cyan-400 px-6 py-2 text-lg text-white duration-300 hover:bg-cyan-500"
+                onClick={() => setIsOpen(false)}
+              >
+                キャンセル
+              </Button>
             </div>
           </DialogPanel>
         </div>
