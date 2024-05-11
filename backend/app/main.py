@@ -21,4 +21,4 @@ app.include_router(login_router, prefix="/api/login", tags=["login"])
 app.include_router(logout_router, prefix="/api/logout", tags=["logout"])
 app.include_router(create_book_router, prefix="/api/books", tags=["create_book"])
 app.include_router(create_daily_log, prefix="/api/logs", tags=["create_daily_log"])
-
+app.include_router(get_dashboard, prefix="/api/dashboard", tags=["get_dashboard"])
