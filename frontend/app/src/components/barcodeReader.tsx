@@ -2,8 +2,13 @@ import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useState, ChangeEvent } from "react";
 import Quagga from "@ericblade/quagga2";
 
-export default function BarcodeReader() {
-  const [isOpen, setIsOpen] = useState(false);
+interface BarcodeReaderProps {
+  onClose: () => void; // モーダルを閉じる関数
+}
+
+// export default function BarcodeReader() {
+export default function BarcodeReader({ onClose }: BarcodeReaderProps) {
+  // const [isOpen, setIsOpen] = useState(false);
   const [image, setImage] = useState<string>("");
   const [barcode, setBarcode] = useState("");
 
@@ -37,17 +42,18 @@ export default function BarcodeReader() {
 
   return (
     <>
-      <Button
+      {/* <Button
         className="boder-0 m-4 rounded-xl bg-green-400 px-6 py-2 text-lg text-white duration-300 hover:bg-green-500"
         onClick={() => setIsOpen(true)}
       >
         書籍登録
-      </Button>
-      <Dialog
+      </Button> */}
+      {/* <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
         className="relative z-50 "
-      >
+      > */}
+      <Dialog open={true} onClose={onClose} className="relative z-50 ">
         <div className="fixed inset-0 flex w-screen items-center justify-center bg-black/30 p-4">
           <DialogPanel className="flex h-auto w-auto flex-col rounded-xl bg-cyan-100 backdrop:bg-gray-900">
             <DialogTitle className="m-4 text-center text-lg text-gray-700 underline underline-offset-8">
@@ -73,9 +79,13 @@ export default function BarcodeReader() {
               <Button className="boder-0 m-4 rounded-xl bg-cyan-400 px-6 py-2 text-lg text-white duration-300 hover:bg-cyan-500">
                 フォームから入力する
               </Button>
-              <Button
+              {/* <Button
                 className="boder-0 m-4 rounded-xl bg-cyan-400 px-6 py-2 text-lg text-white duration-300 hover:bg-cyan-500"
                 onClick={() => setIsOpen(false)}
+              > */}
+              <Button
+                className="boder-0 m-4 rounded-xl bg-cyan-400 px-6 py-2 text-lg text-white duration-300 hover:bg-cyan-500"
+                onClick={onClose}
               >
                 キャンセル
               </Button>

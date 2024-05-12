@@ -16,7 +16,13 @@ export default function BookRegisterForm() {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)}>Open Book Register Form</Button>
+      {/* <Button
+        onClick={() => setIsOpen(true)}
+        className="boder-0 m-4 rounded-xl bg-cyan-400 px-6 py-2 text-lg text-white duration-300 hover:bg-cyan-500"
+      >
+        フォームから入力する
+      </Button> */}
+      {/* <Button onClick={() => setIsOpen(true)}>Open Book Register Form</Button> */}
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
