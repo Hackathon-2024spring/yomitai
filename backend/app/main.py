@@ -14,6 +14,7 @@ from .routers.get_dashboard import router as get_dashboard
 from .routers.get_my_books_title import router as get_my_books_title
 from .routers.get_library import router as get_library
 from .routers.graph import router as graph
+from .routers.get_book_detail import router as get_my_books_title
 # models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -28,3 +29,4 @@ app.include_router(get_dashboard, prefix="/api/dashboard", tags=["get_dashboard"
 app.include_router(get_my_books_title, prefix="/api/my_books_title", tags=["get_my_books_title"])
 app.include_router(get_library, prefix="/api/library", tags=["get_library"])
 app.include_router(graph, prefix="/api/graph", tags=["graph"])
+app.include_router(get_my_books_title, prefix="/api/book_detail", tags=["get_my_book_detail"])

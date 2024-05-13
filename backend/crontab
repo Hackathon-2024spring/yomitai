@@ -1,0 +1,15 @@
+# 毎日朝8時に notifications.py スクリプトを実行
+0 8 * * * /usr/local/bin/python3 /workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+05 * * * * /usr/local/bin/python3 yomitai/backend//workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+10 * * * * /usr/local/bin/python3 yomitai/backend//workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+15 * * * * /usr/local/bin/python3 yomitai/backend//workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+20 * * * * /usr/local/bin/python3 yomitai/backend//workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+25 * * * * /usr/local/bin/python3 yomitai/backend//workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+30 * * * * /usr/local/bin/python3 yomitai/backend//workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+35 * * * * /usr/local/bin/python3 yomitai/backend//workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+40 * * * * /usr/local/bin/python3 yomitai/backend//workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+45 * * * * /usr/local/bin/python3 yomitai/backend//workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+50 * * * * /usr/local/bin/python3 yomitai/backend//workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+55 * * * * /usr/local/bin/python3 yomitai/backend//workspaces/yomitai/backend/app/notifications.py >> /workspaces/yomitai/backend/log/cron.log 2>&1
+*/1 * * * * date >> /workspaces/yomitai/backend/app/log/cron.log 2>&1
+

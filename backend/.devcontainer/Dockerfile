@@ -4,8 +4,10 @@ FROM python:3.9
 # 環境変数を設定
 ENV PYTHONUNBUFFERED 1
 
-# Poetry をインストール
-RUN pip install poetry sqlalchemy pymysql alembic mysqlclient passlib
+# cronと必要なパッケージをインストール
+RUN apt-get update && apt-get install -y cron \
+  && pip install poetry sqlalchemy pymysql alembic mysqlclient passlib
+
 # 作業ディレクトリを設定
 WORKDIR /workspace
 
@@ -17,5 +19,13 @@ RUN poetry config virtualenvs.create false \
 # ホストマシンのファイルをコピー
 COPY . /workspace
 
-# FastAPI の起動コマンド (オーバーライド可能)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--reload"]
+# crontab ファイルとentrypoint.shをコンテナにコピー
+COPY crontab /etc/cron.d/my_crontab
+COPY entrypoint.sh /entrypoint.sh
+
+# crontab ファイルとentrypoint.shの権限設定
+RUN chmod 0644 /etc/cron.d/my_crontab \
+  && chmod +x /entrypoint.sh
+
+# エントリーポイントの設定
+ENTRYPOINT ["/entrypoint.sh"]

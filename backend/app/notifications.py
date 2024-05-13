@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
-from app.models import Reading_session, Book, Daily_log, User
+from models import Reading_session, Book, Daily_log, User
 import boto3
 from .database import SessionLocal
+
+print("アラート判定関数を実行します")
 
 def calculate_milestones(start_date, end_date):
     """読書セッションの開始日と目標終了日から、50%および80%のマイルストーン日を計算する"""
