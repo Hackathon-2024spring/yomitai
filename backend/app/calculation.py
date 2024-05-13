@@ -119,7 +119,6 @@ def calculate_consecutive_reading_days(user_id: int, db: Session):
     if not logs:
         return 0
 
-    max_streak = 0
     current_streak = 1
     previous_date = logs[0].date
 
@@ -127,12 +126,11 @@ def calculate_consecutive_reading_days(user_id: int, db: Session):
         if log.date == previous_date + timedelta(days=1):
             current_streak += 1
         else:
-            max_streak = max(max_streak, current_streak)
-            current_streak = 1 if log.date != previous_date else current_streak
+            if log.date != previous_date:
+                current_streak = 1
         previous_date = log.date
 
-    max_streak = max(max_streak, current_streak)
-    return max_streak
+    return current_streak
 
 # 読書ページ数の計算
 def calculate_total_pages_read(user_id: int, db: Session):
@@ -147,15 +145,6 @@ def calculate_reading_sessions(user_id: int, db: Session):
 
 # 読書した本の数の計算
 def calculate_books_read(user_id: int, db: Session):
-    # ユーザーが読んだ各本に対する総読書ページ数を集計
-    book_pages_read = db.query(
-        Daily_log.my_book_id,
-        My_book.total_page,
-        func.sum(Daily_log.page_read).label('total_read')
-    ).join(My_book, Daily_log.my_book_id == My_book.id
-    ).filter(My_book.user_id == user_id
-    ).group_by(Daily_log.my_book_id, My_book.total_page).all()
-
-    # 読了した本の数をカウント
-    books_read_count = sum(1 for _, total_pages, total_read in book_pages_read if total_read >= total_pages)
+    books_read_count = db.query(My_book).filter(My_book.user_id == user_id, My_book.end_date != None).count()
     return books_read_count
+
