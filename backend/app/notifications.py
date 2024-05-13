@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
-from app.models import Reading_session, Book, Daily_log, User
+from app.models import Reading_session, Book, Daily_log, User, My_book
 import boto3
 from .database import SessionLocal
 
@@ -16,7 +16,7 @@ def calculate_milestones(start_date, end_date):
 
 def get_current_progress(book_id, db):
     """指定された本の総読書ページ数を返す"""
-    logs = db.query(Daily_log).filter(Daily_log.book_id == book_id).all()
+    logs = db.query(Daily_log).join(My_book, Daily_log.my_book_id == My_book.id).filter(My_book.book_id == book_id).all()
     total_pages_read = sum(log.page_read for log in logs)
     return total_pages_read
 
