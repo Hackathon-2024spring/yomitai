@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useState, ChangeEvent } from "react";
 import Quagga from "@ericblade/quagga2";
+import { useBookContext } from "../contexts/bookContext";
 
 interface BarcodeReaderProps {
   onClose: () => void; // モーダルを閉じる関数
@@ -12,8 +13,9 @@ export default function BarcodeReader({
   onClose,
   openForm,
 }: BarcodeReaderProps) {
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState("");
   const [barcode, setBarcode] = useState("");
+  const { setBookInfo } = useBookContext();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
@@ -35,13 +37,33 @@ export default function BarcodeReader({
       },
       (result) => {
         if (result && result.codeResult) {
-          setBarcode(result.codeResult.code as string);
+          const code = result.codeResult.code as string;
+          setBarcode(code);
+          searchBook(code);
         } else {
           setBarcode("バーコードを読み取れませんでした。");
         }
       },
     );
   };
+
+  const searchBook = async (barcode: string) => {
+    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${barcode}`);
+    const data = await res.json();
+
+    const item = data.items[0];
+    const title = item.volumeInfo.title;
+    const authors = item.volumeInfo.authors.join(', ');
+    const publisher = item.volumeInfo.publisher;
+    const pages = item.volumeInfo.pageCount;
+
+    setBookInfo({
+      title: title,
+      authors: authors,
+      publisher: publisher,
+      pages: pages
+    });
+  }
 
   return (
     <>
