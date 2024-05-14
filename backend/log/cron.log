@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/workspaces/yomitai/backend/app/notifications.py", line 3, in <module>
+    from models import Reading_session, Book, Daily_log, User
+  File "/workspaces/yomitai/backend/app/models.py", line 6, in <module>
+    from .database import Base
+ImportError: attempted relative import with no known parent package
+Traceback (most recent call last):
+  File "/workspaces/yomitai/backend/app/notifications.py", line 3, in <module>
+    from models import Reading_session, Book, Daily_log, User
+  File "/workspaces/yomitai/backend/app/models.py", line 6, in <module>
+    from .database import Base
+ImportError: attempted relative import with no known parent package
+Traceback (most recent call last):
+  File "/workspaces/yomitai/backend/app/notifications.py", line 3, in <module>
+    from app.models import Reading_session, Book, Daily_log, User, My_book
+ModuleNotFoundError: No module named 'app'

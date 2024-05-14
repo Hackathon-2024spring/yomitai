@@ -4,6 +4,8 @@ from app.models import Reading_session, Book, Daily_log, User, My_book
 import boto3
 from .database import SessionLocal
 
+print("アラート判定関数を実行します")
+
 def calculate_milestones(start_date, end_date):
     """読書セッションの開始日と目標終了日から、50%および80%のマイルストーン日を計算する"""
     total_days = (end_date - start_date).days

@@ -1,0 +1,58 @@
+# このファイルを使用するには./backend/Dockerfileの修正が必要！！（依存関係の部分）
+
+services:
+  yomitai_local_db:
+    container_name: yomitai_local_db
+    image: mysql:latest
+    restart: unless-stopped
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/db/my.cnf:/etc/mysql/conf.d/my.cnf
+    # ports:
+    #   - "5432:5432"
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DB: mysql
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_CHARACTER_SET_SERVER: 'utf8mb4'
+      MYSQL_COLLATION_SERVER: 'utf8mb4_unicode_ci'
+
+  yomitai_backend:
+    container_name: fastapi
+    build:
+      context: .
+      dockerfile: ./backend/.devcontainer/Dockerfile
+    volumes:
+      - ./backend:/backend
+    ports:
+      - "8000:8000"  # バックエンドのポート設定
+    tty: true
+    command: >
+      /bin/sh -c '
+      cd backend/ &&
+      uvicorn app.main:app --host 0.0.0.0
+      '
+    depends_on:
+      - yomitai_local_db
+
+
+  # frontend:
+  #   container_name: react
+  #   build:
+  #     context: .
+  #     dockerfile: ./frontend/Dockerfile
+  #   volumes:
+  #     - ./front/app:/app
+  #     - /React/node_modules
+  #   ports:
+  #     - "5173:5173"  # フロントエンドのポート設定
+  #   tty: true
+  #   command: /bin/sh -c "npm run dev"
+
+
+volumes:
+  mysql-data:

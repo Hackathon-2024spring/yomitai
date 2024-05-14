@@ -74,6 +74,20 @@ class CreateBook(MyBook):
     class Config:
         orm_mode = True
 
+
+class BookUpdate(BaseModel):
+    title: Optional[str]
+    author: Optional[str]
+    publisher: Optional[str]
+    total_page: Optional[int]
+    image: Optional[str] = None
+    genre: Optional[str]
+    updated_at: Optional[datetime]
+
+    class Config:
+        orm_mode = True
+
+
 class ReadBookRequest(BaseModel):
     title: str
     page_read: int
