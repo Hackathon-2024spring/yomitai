@@ -3,8 +3,9 @@ from sqlalchemy import func
 from .models import Daily_log, My_book, Genre
 from itertools import groupby # 円グラフ用集計で使用
 import datetime
+from datetime import timedelta
 
-
+# グラフページ
 # 棒グラフ用集計
 def calculate_pages_read_weekly(db: Session, user_id: int, start_date: datetime.date, end_date: datetime.date):
     """指定された期間の週ごとのページ数を計算"""
@@ -106,3 +107,44 @@ def calculate_genre_distribution_yearly(db: Session, user_id: int, start_date: d
 
 
     return genre_percentages
+
+
+
+# ミッションページ
+# 連続読書日数の計算
+def calculate_consecutive_reading_days(user_id: int, db: Session):
+    # データベースからユーザーの読書ログを取得
+    logs = db.query(Daily_log).join(My_book, Daily_log.my_book_id == My_book.id).filter(My_book.user_id == user_id).order_by(Daily_log.date).all()
+
+    if not logs:
+        return 0
+
+    current_streak = 1
+    previous_date = logs[0].date
+
+    for log in logs[1:]:
+        if log.date == previous_date + timedelta(days=1):
+            current_streak += 1
+        else:
+            if log.date != previous_date:
+                current_streak = 1
+        previous_date = log.date
+
+    return current_streak
+
+# 読書ページ数の計算
+def calculate_total_pages_read(user_id: int, db: Session):
+    logs = db.query(Daily_log).join(My_book, Daily_log.my_book_id == My_book.id).filter(My_book.user_id == user_id).all()
+    total_pages = sum(log.page_read for log in logs if log.page_read)
+    return total_pages
+
+# 読書記録の回数の計算
+def calculate_reading_sessions(user_id: int, db: Session):
+    count = db.query(Daily_log).join(My_book, Daily_log.my_book_id == My_book.id).filter(My_book.user_id == user_id).count()
+    return count
+
+# 読書した本の数の計算
+def calculate_books_read(user_id: int, db: Session):
+    books_read_count = db.query(My_book).filter(My_book.user_id == user_id, My_book.end_date != None).count()
+    return books_read_count
+
