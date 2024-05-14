@@ -3,12 +3,12 @@ from sqlalchemy.orm import Session
 from .. import models
 from ..database import get_db
 from ..session_store import sessions
-from sqlalchemy
+
 
 
 router = APIRouter()
 
-@router.post("/")
+@router.get("/")
 def get_book_detail(request: Request, my_book_id: int, db: Session = Depends(get_db)):
     session_id = request.cookies.get("session_id")
     if session_id not in sessions:
@@ -30,18 +30,22 @@ def get_book_detail(request: Request, my_book_id: int, db: Session = Depends(get
         book_details_list = [book_detail]
 
     tag_list = []
-    tags = db.query(models.Book_tag, models.Tag).\
+    tags = db.query(models.Book_tag, models.Tag, models.My_book).\
         join(models.Tag, models.Book_tag.tag_id == models.Tag.id).\
-        filter(models.Book_tag.my_book_id == my_book_id).\
+        join(models.My_book, models.Book_tag.my_book_id == models.My_book.id).\
+        filter(models.Book_tag.my_book_id == my_book_id,
+               models.My_book.user_id == user_id).\
         all()
-    for book_tag, tag in tags:
+    for book_tag, tag, my_book in tags:
         tag_list.append({"book_tags.id": book_tag.id, "tag_name": tag.tag_name})
 
     memo_list = []
-    memos = db.query(models.Daily_log).\
-        filter(models.Daily_log.my_book_id == my_book_id).\
+    memos = db.query(models.Daily_log,models.My_book).\
+        join(models.My_book, models.Daily_log.my_book_id ==models.My_book.id).\
+        filter(models.Daily_log.my_book_id == my_book_id,
+               models.My_book.user_id == user_id).\
         all()
-    for memo in memos:
+    for memo, my_book in memos:
         memo_list.append({"daily_logs.id": memo.id, "memo": memo.memo})
 
 

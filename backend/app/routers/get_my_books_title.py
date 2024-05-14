@@ -6,7 +6,7 @@ from ..session_store import sessions
 
 router = APIRouter()
 
-@router.post("/")
+@router.get("/")
 def get_my_books_titile(request: Request, db: Session = Depends(get_db)):
     session_id = request.cookies.get("session_id")
     if session_id not in sessions:
@@ -14,8 +14,6 @@ def get_my_books_titile(request: Request, db: Session = Depends(get_db)):
 
     user_id = sessions[session_id]
 
-    # users, books, daily_logs, reading_sessionsを内部結合し、
-    # セッションIDからuser.idを取得し、end_dateがnullであるものをフィルタ
     title_list = []
     my_books = db.query(models.My_book).filter(
         models.My_book.user_id == user_id,
