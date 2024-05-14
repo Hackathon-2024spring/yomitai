@@ -1,6 +1,6 @@
 import Header from "../components/Header";
-import BarcodeReader from "../components/barcodeReader";
 import { CalendarComponent } from "../components/calendarComponent";
+import Modals from "./modals";
 
 export default function Home() {
   return (
@@ -78,7 +78,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <BarcodeReader />
+              <Modals />
             </div>
           </div>
         </div>
