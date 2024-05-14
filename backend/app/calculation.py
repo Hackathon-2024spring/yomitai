@@ -74,6 +74,20 @@ def calculate_genre_distribution_monthly(db: Session, user_id: int, start_date: 
 
     return genre_percentages
 
+# 指定した期間の総読書ページ数　
+def calculate_total_pages_read_period(db: Session, user_id: int, start_date: datetime.date, end_date: datetime.date):
+    """指定された期間の総読書ページ数を計算"""
+    total_pages = db.query(
+        func.sum(Daily_log.page_read)
+    ).join(My_book, My_book.id == Daily_log.my_book_id).filter(
+        My_book.user_id == user_id,
+        Daily_log.date >= start_date,
+        Daily_log.date <= end_date
+    ).scalar()
+
+    return total_pages if total_pages is not None else 0
+
+
 
 # ミッションページ
 # 連続読書日数の計算
