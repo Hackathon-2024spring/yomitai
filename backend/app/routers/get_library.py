@@ -8,7 +8,7 @@ import datetime
 
 router = APIRouter()
 
-@router.post("/")
+@router.get("/")
 def get_library(request: Request, db: Session = Depends(get_db)):
     session_id = request.cookies.get("session_id")
     if session_id not in sessions:

@@ -227,9 +227,9 @@ INSERT INTO tags(tag_name)value('試験用タグ2');
 INSERT INTO tags(tag_name)value('試験用タグ3');
 INSERT INTO book_tags(my_book_id, tag_id)value(1,1);
 INSERT INTO book_tags(my_book_id, tag_id)value(1,3);
-INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,40,'2024-05-10','読書1回目');
-INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,30,'2024-05-10','読書2回目');
-INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,20,'2024-05-11','読書3回目');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,40,'2024-05-10','2024-05-10: 読書１回目');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,30,'2024-05-10','2024-05-10: 読書２回目');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,20,'2024-05-11','2024-05-11: 読書３回目');
 
 -- 権限設定の更新
 FLUSH PRIVILEGES;
