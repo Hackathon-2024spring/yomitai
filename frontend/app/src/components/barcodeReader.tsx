@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useState, ChangeEvent } from "react";
 import Quagga from "@ericblade/quagga2";
+import Scan from "./Scan";
 
 interface BarcodeReaderProps {
   onClose: () => void; // モーダルを閉じる関数
@@ -45,15 +46,16 @@ export default function BarcodeReader({
 
   return (
     <>
-      <Dialog open={true} onClose={onClose} className="relative z-50 ">
+      <Dialog open={true} onClose={onClose} className="relative z-50">
         <div className="fixed inset-0 flex w-screen items-center justify-center bg-black/30 p-4 text-gray-700">
           <DialogPanel className="flex h-auto w-auto flex-col rounded-xl bg-cyan-100">
             <DialogTitle className="m-4 text-center text-lg  underline underline-offset-8">
               書籍情報登録
             </DialogTitle>
-            <p className="mx-auto my-4 p-4 ">
-              本のバーコードを撮影してアップロードしてください
-            </p>
+            <div className="mx-auto flex flex-col items-center w-2/3"><Scan /></div>
+            {/* <div id="barcodeview" className="mx-auto my-4 p-4 ">
+              本のバーコードを撮影してアップロードしてください。
+            </div> */}
             <div className="m-2 flex flex-col">
               <input
                 className="m-4"
