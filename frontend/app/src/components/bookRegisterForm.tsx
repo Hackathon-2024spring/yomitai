@@ -9,12 +9,14 @@ import {
   Label,
   Select,
 } from "@headlessui/react";
+import { useBookContext } from "../contexts/bookContext";
 
 interface bookRegisterFormProps {
   onClose: () => void; // モーダルを閉じる関数
 }
 
 export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
+  const { bookInfo } = useBookContext();
   return (
     <>
       <Dialog open={true} onClose={onClose} className="relative z-50">
@@ -31,6 +33,7 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
                 <Input
                   className="rounded-lg border p-2 text-center"
                   name="title"
+                  value={bookInfo.title}
                 />
               </Field>
               <Field className="m-2 grid grid-cols-2">
@@ -40,6 +43,7 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
                 <Input
                   className="rounded-lg border p-2 text-center"
                   name="author"
+                  value={bookInfo.authors}
                 />
               </Field>
               <Field className="m-2 grid grid-cols-2">
@@ -49,6 +53,7 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
                 <Input
                   className="rounded-lg border p-2 text-center"
                   name="publisher"
+                  value={bookInfo.publisher}
                 />
               </Field>
               <Field className="m-2 grid grid-cols-2">
@@ -58,6 +63,7 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
                 <Input
                   className="rounded-lg border p-2 text-center"
                   name="pages"
+                  value={bookInfo.pages}
                 />
               </Field>
               <Field className="m-2 grid grid-cols-2">
