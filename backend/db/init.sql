@@ -1,4 +1,4 @@
--- initdb.sql
+#!/bin/bash
 
 -- データベースの作成
 CREATE DATABASE IF NOT EXISTS yomitai;
@@ -90,7 +90,8 @@ CREATE TABLE book_tags (
 
 CREATE TABLE awards (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    award_name VARCHAR(255),
+    award_type VARCHAR(255),
+    award_criteria INT,
     created_at Datetime DEFAULT CURRENT_TIMESTAMP,
     updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -192,27 +193,27 @@ INSERT INTO genres(name)VALUES('日本文学評論・随筆・その他');
 INSERT INTO genres(name)VALUES('外国文学小説');
 INSERT INTO genres(name)VALUES('外国文学その他');
 
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数３日','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数７日','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数１５日','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数３０日','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数１００日','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('連続読書日数３６５日','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書回数１回','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書回数１０回','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書回数１００回','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書ページ１００ページ','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書回数１０００ページ','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書回数５０００ページ','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書１冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書３冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書５冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書１０冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書２０冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書３０冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書４０冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書５０冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO awards(award_name,created_at,updated_at)VALUES('読書１００冊','2024-05-06 12:04:36','2024-05-06 12:04:36');
+INSERT INTO awards(award_type,award_criteria)VALUES('days',3);
+INSERT INTO awards(award_type,award_criteria)VALUES('days',7);
+INSERT INTO awards(award_type,award_criteria)VALUES('days',15);
+INSERT INTO awards(award_type,award_criteria)VALUES('days',30);
+INSERT INTO awards(award_type,award_criteria)VALUES('days',180);
+INSERT INTO awards(award_type,award_criteria)VALUES('days',365);
+INSERT INTO awards(award_type,award_criteria)VALUES('times',1);
+INSERT INTO awards(award_type,award_criteria)VALUES('times',5);
+INSERT INTO awards(award_type,award_criteria)VALUES('times',10);
+INSERT INTO awards(award_type,award_criteria)VALUES('times',100);
+INSERT INTO awards(award_type,award_criteria)VALUES('pages',100);
+INSERT INTO awards(award_type,award_criteria)VALUES('pages',1000);
+INSERT INTO awards(award_type,award_criteria)VALUES('pages',5000);
+INSERT INTO awards(award_type,award_criteria)VALUES('books',1);
+INSERT INTO awards(award_type,award_criteria)VALUES('books',3);
+INSERT INTO awards(award_type,award_criteria)VALUES('books',5);
+INSERT INTO awards(award_type,award_criteria)VALUES('books',10);
+INSERT INTO awards(award_type,award_criteria)VALUES('books',20);
+INSERT INTO awards(award_type,award_criteria)VALUES('books',30);
+INSERT INTO awards(award_type,award_criteria)VALUES('books',50);
+INSERT INTO awards(award_type,award_criteria)VALUES('books',100);
 
 
 INSERT INTO users(user_name,password,email,created_at,updated_at)value('1111','$2b$12$al3GHbWL7Tu0pohp4WRxCeTaGkppYocjDp2gcOFhIkjq36Ww1quq.','1111','2024-05-06 12:04:36','2024-05-06 12:04:36');
@@ -221,7 +222,11 @@ INSERT INTO users(user_name,password,email,created_at,updated_at)value('3333','$
 
 INSERT INTO books(genre_id,title,author,publisher, total_page, isbn_code, image, created_at,updated_at)value(10,'テスト用データ','著者','出版社',600,1234556789,'null','2024-05-06 12:04:36','2024-05-06 12:04:36');
 INSERT INTO my_books(user_id, book_id,genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(2,1,13,'テスト用データ2','著者','出版社',600,'2024-05-01','2024-05-20');
-INSERT INTO my_books(user_id, book_id,genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(2,1,13,'テスト用データ3','著者','出版社',347,'2024-05-03','2024-05-30');
+INSERT INTO my_books(user_id, genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(2,13,'テスト用データ3','著者','出版社',347,'2024-05-03','2024-05-30');
+INSERT INTO my_books(user_id, genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(2,18,'テスト用データ4','著者','出版社',545,'2024-05-03','2024-05-30');
+INSERT INTO my_books(user_id, genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(3,19,'テスト用データ5','著者','出版社',229,'2024-05-03','2024-05-30');
+INSERT INTO my_books(user_id, genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(2,22,'テスト用データ6','著者','出版社',482,'2024-05-03','2024-05-30');
+
 INSERT INTO tags(tag_name)value('試験用タグ');
 INSERT INTO tags(tag_name)value('試験用タグ2');
 INSERT INTO tags(tag_name)value('試験用タグ3');
@@ -230,6 +235,19 @@ INSERT INTO book_tags(my_book_id, tag_id)value(1,3);
 INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,40,'2024-05-10','2024-05-10: 読書１回目');
 INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,30,'2024-05-10','2024-05-10: 読書２回目');
 INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,20,'2024-05-11','2024-05-11: 読書３回目');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(2,50,'2024-05-12','2024-05-12: 読書４回目');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(3,80,'2024-05-13','2024-05-13: 読書５回目');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(2,140,'2024-05-13','2024-05-13: 読書６回目');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(3,149,'2024-05-14','2024-05-14: 読書７回目');
+
+INSERT INTO user_awards(user_id,award_id,award_date)value(2,1,'2024-01-10');
+INSERT INTO user_awards(user_id,award_id,award_date)value(2,2,'2024-01-20');
+INSERT INTO user_awards(user_id,award_id,award_date)value(2,3,'2024-03-12');
+INSERT INTO user_awards(user_id,award_id,award_date)value(2,7,'2024-01-10');
+INSERT INTO user_awards(user_id,award_id,award_date)value(2,8,'2024-01-30');
+INSERT INTO user_awards(user_id,award_id,award_date)value(2,9,'2024-02-20');
+INSERT INTO user_awards(user_id,award_id,award_date)value(2,10,'2024-03-10');
+INSERT INTO user_awards(user_id,award_id,award_date)value(2,11,'2024-05-10');
 
 -- 権限設定の更新
 FLUSH PRIVILEGES;

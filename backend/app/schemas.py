@@ -98,7 +98,8 @@ class ReadBookRequest(BaseModel):
 
 
 class Award(BaseModel):
-    award_name: str
+    award_type: str
+    award_criteria:int
     created_at: datetime
     updated_at: datetime
 
@@ -107,10 +108,3 @@ class UserAward(BaseModel):
     award_date: date
     created_at: datetime
     created_at: datetime
-
-
-class AwardCriteria(BaseModel):
-    type: str
-    value: int
-    created_at: datetime
-    updated_at: datetime
