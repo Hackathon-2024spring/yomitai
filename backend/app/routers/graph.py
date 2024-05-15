@@ -15,7 +15,7 @@ router = APIRouter()
 
 @router.get("/")
 
-def get_reading_statistics(request: Request, start_date: str, end_date: str, period: str, db: Session = Depends(get_db)):
+def get_reading_statistics(request: Request, period: str, db: Session = Depends(get_db)):
     session_id = request.cookies.get("session_id")
     if session_id not in sessions:
         raise HTTPException(status_code=401, detail="未承認またはセッションが無効")
