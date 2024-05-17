@@ -5,6 +5,7 @@ interface BookInfo {
   authors: string;
   publisher: string;
   pages: number;
+  isbn: string;
 }
 
 interface BookContextProps {
@@ -16,12 +17,13 @@ const defaultBookInfo = {
   title: "",
   authors: "",
   publisher: "",
-  pages: 0
+  pages: 0,
+  isbn: "",
 };
 
 const BookContext = createContext<BookContextProps>({
   bookInfo: defaultBookInfo,
-  setBookInfo: () => { }
+  setBookInfo: () => {},
 });
 
 export const BookProvider = ({ children }: { children: ReactNode }) => {
