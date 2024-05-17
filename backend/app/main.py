@@ -15,10 +15,20 @@ from .routers.get_my_books_title import router as get_my_books_title
 from .routers.get_library import router as get_library
 from .routers.graph import router as graph
 from .routers.awards import router as awards
+from fastapi.middleware.cors import CORSMiddleware
 
 # models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+# CORS設定
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"], # Reactアプリケーションのオリジンを許可
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # 各ルーターを適切なプレフィックスでインクルード
 app.include_router(signup_router, prefix="/api/signup", tags=["signup"])
