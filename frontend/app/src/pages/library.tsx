@@ -1,3 +1,4 @@
+import { Select } from "@headlessui/react";
 import Header from "../components/Header";
 import { useRef, useState } from "react";
 // import './App.css';
@@ -12,8 +13,8 @@ export default function Library() {
     // console.log(ref.current.value)
 
     // API URL
-    const endpointURL = `https://pixabay.com/api/?key=43385307-62aaa7aff1ec0a25276441c07&q=${ref.current.value}&image_type=photo`;
-    // APIを叩くデータフェッチング　　fetch or axios
+    const endpointURL = "/hoge";
+    // APIを叩くデータフェッチング fetch or axios
     fetch(endpointURL)
       .then((res) => {
         return res.json();
@@ -27,10 +28,24 @@ export default function Library() {
     <>
       <Header />
       <section className="h-screen w-screen bg-yellow-50 text-xl text-gray-700">
-        <div className="container flex divide-x divide-gray-400">
-          <div className=" mx-auto flex w-2/5 flex-col items-center p-4">
-            <form onSubmit={(e) => handleSubmit(e)}>
-              <input type="text" placeholder="Search tags" ref={ref} />
+        <div className="mx-auto container flex divide-x divide-gray-400">
+          <div className=" mx-auto flex w-2/5 flex-col items-center p-4 ">
+            <form onSubmit={(e) => handleSubmit(e)} className="flex">
+              <button
+                type="submit"
+                className="m-2 w-8"
+              >
+                <img src="../img/serch_icon.png" alt="serch_icon" />
+              </button>
+              <Select
+                  className=" w-80 rounded-lg border p-2 text-center"
+                  name="genre"
+                >
+                  <option>仮tag1</option>
+                  <option>仮tag2</option>
+                </Select>
+              {/* <input className="p-2 rounded-lg border border-black" type="text" placeholder="Search tags" ref={ref} /> */}
+              
             </form>
             {/* 書籍カードを表示するコンポーネント化を行う */}
             <div className="flex flex-col items-center p-4">
@@ -80,12 +95,40 @@ export default function Library() {
           <div className="m-4 flex w-3/5 items-center justify-center ">
             <div
               className="relative mx-4 my-4 h-full w-full transform
-                   rounded-xl bg-green-100 p-4 text-gray-600 shadow-md transition-transform "
+                   rounded-xl bg-green-100 p-4 text-gray-600 shadow-md"
             >
-              書籍情報
+                <div className="w-full p-4">
+                  <div className="flex ">
+                    <div className="mr-2">
+                      <img
+                        src="../img/book_tailwind.jpg"
+                        alt="description"
+                        className="mr-4 h-40"
+                      />
+                    </div>
+                    <div className="flex flex-col flex-grow font-midium">
+                      <div className="text-4xl underline underline-offset-8 mb-4">
+                        tailwindcss 実践入門
+                      </div>
+                      <div className="mb-4">
+                        読書進捗ステータス情報
+                      </div>
+                      <div className="mb-4 rounded-xl p-4 bg-cyan-100 my-4">
+                        タグ一覧
+                      </div>
+                      <textarea className="mb-4 rounded-xl p-4 bg-yellow-50">
+                        メモ情報1
+                      </textarea>
+                      <textarea className="mb-4 rounded-xl p-4 bg-yellow-50">
+                        メモ情報2
+                      </textarea>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
       </section>
     </>
   );
