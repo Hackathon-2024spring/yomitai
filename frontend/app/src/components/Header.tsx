@@ -6,7 +6,7 @@ function Header() {
       <img src="./public/img/Yomitai_Icon2.png" alt="" className="w-16" />
       <nav className="mx-auto flex flex-row items-center ">
         <a
-          href="#home"
+          href="/"
           className="mx-4 flex flex-col items-center hover:text-green-500"
         >
           <svg
@@ -26,7 +26,7 @@ function Header() {
           ホーム
         </a>
         <a
-          href="#about"
+          href="#"
           className="mx-4 flex flex-col items-center hover:text-green-500"
         >
           <svg
@@ -51,7 +51,7 @@ function Header() {
         </a>
 
         <a
-          href="#about"
+          href="graph"
           className="mx-4 flex flex-col items-center hover:text-green-500"
         >
           <svg
@@ -77,7 +77,7 @@ function Header() {
           グラフ
         </a>
         <a
-          href="#skills"
+          href="mission"
           className="mx-4 flex flex-col items-center hover:text-green-500"
         >
           <svg
@@ -99,7 +99,7 @@ function Header() {
           ミッション
         </a>
         <a
-          href="#blog"
+          href="library"
           className="mx-4 flex flex-col items-center hover:text-green-500"
         >
           <svg
