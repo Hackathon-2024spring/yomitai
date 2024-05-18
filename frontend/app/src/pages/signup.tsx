@@ -37,7 +37,7 @@ export default function Signup() {
   } = useForm<SignupForm>({ resolver: zodResolver(SignupScheme) });
 
   const onSubmit: SubmitHandler<SignupForm> = (data) => {
-    fetch("/api/signup", {
+    fetch("http://localhost:8000/api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export default function Signup() {
       })
       .then((data) => {
         console.log("Signup success:", data);
-        navigate("/dashboard");
+        navigate("/");
       })
       .catch((error) => {
         console.log("Signup error:", error);

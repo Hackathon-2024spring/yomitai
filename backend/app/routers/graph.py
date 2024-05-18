@@ -24,6 +24,7 @@ def get_reading_statistics(request: Request, period: str, db: Session = Depends(
 
     end_date = datetime.today().date()  # 今日の日付
 
+    # 週、月、年は引数にweekly、monthly、yearlyを入れたら切り替わるように設定
     if period == 'weekly':
         start_date = end_date - timedelta(days=7)
         pages_summary = calculate_pages_read_daily(db, user_id, start_date, end_date)

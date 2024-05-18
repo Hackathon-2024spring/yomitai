@@ -25,7 +25,7 @@ export default function Login() {
   } = useForm<LoginForm>({ resolver: zodResolver(LoginScheme) });
 
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
-    fetch("/api/login", {
+    fetch("http://localhost:8000/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +40,7 @@ export default function Login() {
       })
       .then((data) => {
         console.log("Login success:", data);
-        navigate("/dashboard");
+        navigate("/");
       })
       .catch((error) => {
         console.log("Login error:", error);
