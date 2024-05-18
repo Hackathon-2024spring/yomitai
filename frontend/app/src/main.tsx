@@ -7,6 +7,9 @@ import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Modals from "./pages/modals";
 import { BookProvider } from "./contexts/bookContext";
+import Graph from "./pages/graph";
+import Mission from "./pages/mission";
+import Library from "./pages/library";
 
 async function enableMocking() {
   if (!import.meta.env.DEV) {
@@ -34,6 +37,18 @@ const router = createBrowserRouter([
   {
     path: "/modals",
     element: <Modals />,
+  },
+  {
+    path: "/graph",
+    element: <Graph />,
+  },
+  {
+    path: "/mission",
+    element: <Mission />,
+  },
+  {
+    path: "/library",
+    element: <Library />,
   },
 ]);
 
