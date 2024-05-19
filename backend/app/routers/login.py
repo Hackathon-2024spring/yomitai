@@ -19,9 +19,9 @@ def login(login_data: Login, response: Response, db: Session = Depends(database.
 
     # セッションIDを生成してクッキーに保存
     session_id = secrets.token_urlsafe()
-    response.set_cookie(key="session_id", value=session_id, httponly=True, secure=True, samesite='Lax')
+    response.set_cookie(key="session_id", value=session_id, httponly=True, secure=False, samesite='Lax')
 
     # セッションIDに対応するユーザーIDをインメモリストアに保存
     sessions[session_id] = user.id  # user.idは認証されたユーザーのID
 
-    return {"message": "Login successful!"}
+    return {"session_id": session_id}
