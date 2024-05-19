@@ -48,13 +48,16 @@ def get_dashboard(request: Request, db: Session = Depends(get_db)):
     unique_date = set(reading_date_list)
     reading_date=list(unique_date)
 
-    # user_awardsのdateリストを取得
-    award_date_list = [award.date for award in db.query(models.User_award.award_date).filter(models.User_award.user_id == user_id).all()]
+    # # user_awardsのdateリストを取得
+    # award_date_list = [award.date for award in db.query(models.User_award.award_date).filter(models.User_award.user_id == user_id).all()]
+    # award_list = [award.date for award in award_date_list]
+    # award_unique_date = set(award_list)
+    # award_date = list(award_unique_date)
 
     response = {
         "dashboard": dashboard_list,
         "reading_dates": reading_date,
-        "award_dates": award_date_list
+        # "award_dates": award_date
     }
 
     return response

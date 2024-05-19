@@ -102,6 +102,7 @@ class Award(Base):
     __tablename__ = "awards"
 
     id = Column(Integer, primary_key=True, index=True)
+    award_name = Column(String(255), nullable=False)
     award_type = Column(String(255), nullable=False)
     award_criteria = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=datetime.now(), nullable=False)

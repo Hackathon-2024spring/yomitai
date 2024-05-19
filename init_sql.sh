@@ -1,4 +1,8 @@
+init_yomitai.sh
 #!/bin/bash
+
+mysql -u admin -p -h database-1.c3q64gg42kiw.ap-northeast-1.rds.amazonaws.com -P 3306 <<EOF
+-- initdb.sql
 
 -- データベースの作成
 CREATE DATABASE IF NOT EXISTS yomitai;
@@ -253,3 +257,4 @@ INSERT INTO user_awards(user_id,award_id,award_date)value(2,14,'2024-01-10');
 
 -- 権限設定の更新
 FLUSH PRIVILEGES;
+EOF
