@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import { CalendarComponent } from "../components/calendarComponent";
-import Modals from "./modals";
+import BookRegistModals from "../components/bookRegistModals";
 
 export default function Home() {
   return (
@@ -78,7 +78,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <Modals />
+              <BookRegistModals />
             </div>
           </div>
         </div>

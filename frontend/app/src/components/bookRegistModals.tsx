@@ -1,8 +1,8 @@
 import { useState } from "react";
-import BarcodeReader from "../components/barcodeReader";
-import BookRegisterForm from "../components/bookRegisterForm";
+import BarcodeReader from "./barcodeReader";
+import BookRegisterForm from "./bookRegisterForm";
 
-export default function Modals() {
+export default function BookRegistModals() {
   const [isBarcodeReaderOpen, setIsBarcodeReaderOpen] = useState(false);
   const [isBookRegisterFormOpen, setIsBookRegisterFormOpen] = useState(false);
 
@@ -19,7 +19,7 @@ export default function Modals() {
   return (
     <>
       <button
-        className="boder-0 m-4 rounded-xl bg-green-400 px-6 py-2 text-lg text-white duration-300 hover:bg-green-500"
+        className="my-2 rounded-xl bg-green-400 px-2 py-1 text-lg text-white duration-300 hover:bg-green-500"
         onClick={openBarcodeReader} // ボタンがクリックされた時にモーダルを開く
       >
         書籍登録
