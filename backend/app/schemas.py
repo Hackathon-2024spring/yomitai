@@ -98,8 +98,9 @@ class ReadBookRequest(BaseModel):
 
 
 class Award(BaseModel):
+    award_name: str
     award_type: str
-    award_criteria:int
+    award_criteria: int
     created_at: datetime
     updated_at: datetime
 

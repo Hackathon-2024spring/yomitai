@@ -3,16 +3,16 @@
 services:
   yomitai_local_db:
     container_name: yomitai_local_db
-    image: mysql:latest
+    image: mysql:8.0
     restart: unless-stopped
     volumes:
       - mysql-data:/var/lib/mysql
       - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./backend/db/my.cnf:/etc/mysql/conf.d/my.cnf
-    # ports:
-    #   - "5432:5432"
-    expose:
-      - "3306"
+    ports:
+      - "3306:3306"
+    # expose:
+    #   - "3306"
     environment:
       MYSQL_ROOT_PASSWORD: mysql
       MYSQL_DB: mysql
@@ -22,10 +22,10 @@ services:
       MYSQL_COLLATION_SERVER: 'utf8mb4_unicode_ci'
 
   yomitai_backend:
-    container_name: fastapi
+    container_name: yomitai_backend
     build:
       context: .
-      dockerfile: ./backend/.devcontainer/Dockerfile
+      dockerfile: ./backend/Dockerfile
     volumes:
       - ./backend:/backend
     ports:
@@ -34,25 +34,22 @@ services:
     command: >
       /bin/sh -c '
       cd backend/ &&
-      uvicorn app.main:app --host 0.0.0.0
+      uvicorn app.main:app --host 0.0.0.0 --port 8000
       '
     depends_on:
       - yomitai_local_db
 
 
-  # frontend:
-  #   container_name: react
-  #   build:
-  #     context: .
-  #     dockerfile: ./frontend/Dockerfile
-  #   volumes:
-  #     - ./front/app:/app
-  #     - /React/node_modules
-  #   ports:
-  #     - "5173:5173"  # フロントエンドのポート設定
-  #   tty: true
-  #   command: /bin/sh -c "npm run dev"
-
+  yomitai_frontend:
+    container_name: yomitai_frontend
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    volumes:
+      - ./frontend:/frontend
+    ports:
+      - "5173:5173"  # フロントエンドのポート設定
+    tty: true
 
 volumes:
   mysql-data:
