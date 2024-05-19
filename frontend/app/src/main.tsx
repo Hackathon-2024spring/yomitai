@@ -5,7 +5,7 @@ import "./index.css";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
-import Modals from "./pages/modals";
+import Modals from "./components/bookRegistModals";
 import { BookProvider } from "./contexts/bookContext";
 import Graph from "./pages/graph";
 import Mission from "./pages/mission";

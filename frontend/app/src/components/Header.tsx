@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import BookMemoModal from "./bookMemoModalButton";
+import BookMemoModalButton from "./bookMemoModalButton";
 
 function Header() {
   return (
-    <header className="flex flex-row items-center border-b border-gray-200 bg-green-100 p-2 text-gray-700">
+    <header className="flex flex-row items-center border-b border-gray-200 bg-green-100 p-2 text-gray-600">
       <img src="./public/img/Yomitai_Icon2.png" alt="" className="w-16" />
       <nav className="mx-auto flex flex-row items-center ">
         <a
@@ -25,7 +27,8 @@ function Header() {
           </svg>
           ホーム
         </a>
-        <a
+
+        {/* <a
           href="#"
           className="mx-4 flex flex-col items-center hover:text-green-500"
         >
@@ -48,7 +51,7 @@ function Header() {
             />
           </svg>
           記録する
-        </a>
+        </a> */}
 
         <a
           href="graph"
@@ -81,8 +84,8 @@ function Header() {
           className="mx-4 flex flex-col items-center hover:text-green-500"
         >
           <svg
-            width="30"
-            height="30"
+            width="34"
+            height="34"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -96,15 +99,15 @@ function Header() {
             <path d="M18 6H20V11H18V6Z" fill="currentColor" />
             <path d="M6 6H4V11H6V6Z" fill="currentColor" />
           </svg>
-          ミッション
+          <div className=" text-sm">ミッション</div>
         </a>
         <a
           href="library"
           className="mx-4 flex flex-col items-center hover:text-green-500"
         >
           <svg
-            width="30"
-            height="30"
+            width="32"
+            height="32"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -116,12 +119,14 @@ function Header() {
               fill="currentColor"
             />
           </svg>
-          ライブラリ
+          <div className=" text-sm">ライブラリ</div>
         </a>
       </nav>
+      <BookMemoModalButton />
+      {/* ↓これにCookieを廃棄するなどのログアウト処理が必要。 */}
       <Link
         to="/login"
-        className="my-2 rounded-xl bg-green-400 px-2 py-1 text-lg text-white duration-300 hover:bg-green-500"
+        className="my-2 rounded-xl bg-green-400 px-2 py-1 text-base text-white duration-300 hover:bg-green-500"
       >
         ログアウト
       </Link>
