@@ -55,8 +55,8 @@ export default function Login() {
             Yomitai
           </div>
           <img
-            src="../public/img/Yomitai_icon.png"
-            alt="Yomitai_icon"
+            src="/public/img/Yomitai_Icon.png"
+            alt="Yomitai_Icon"
             className="md:w-1/2 lg:max-w-lg"
           />
         </div>
