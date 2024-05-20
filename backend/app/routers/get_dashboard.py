@@ -11,12 +11,12 @@ router = APIRouter()
 
 @router.get("/")
 def get_dashboard(request: Request, db: Session = Depends(get_db)):
-    session_id = request.cookies.get("session_id")
-    if session_id not in sessions:
-        raise HTTPException(status_code=401, detail="未認証またはセッションが無効")
+    # session_id = request.cookies.get("session_id")
+    # if session_id not in sessions:
+    #     raise HTTPException(status_code=401, detail="未認証またはセッションが無効")
 
-    user_id = sessions[session_id]
-
+    # user_id = sessions[session_id]
+    user_id = 2
     # users, books, daily_logs, reading_sessionsを内部結合し、
     # セッションIDからuser.idを取得し、end_dateがnullであるものをフィルタ
     dashboard_list = []
