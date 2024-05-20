@@ -1,7 +1,19 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import BookMemoModalButton from "./bookMemoModalButton";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 function Header() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const sessionId = Cookies.get("session_id");
+    if (!sessionId) {
+      console.error("No session ID found");
+      navigate("/login");
+      return;
+    }
+  });
+
   return (
     <>
       <header className="flex flex-row items-center border-b border-gray-200 bg-green-100 p-2 text-gray-600">
