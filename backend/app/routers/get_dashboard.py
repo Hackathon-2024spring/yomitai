@@ -5,6 +5,7 @@ from ..database import get_db
 from ..session_store import sessions
 from sqlalchemy import func
 import datetime
+from datetime import date
 
 router = APIRouter()
 
@@ -30,9 +31,10 @@ def get_dashboard(request: Request, db: Session = Depends(get_db)):
             models.Daily_log.my_book_id == book.id
         ).scalar() or 0
         progress_rate = (total_pages_read / book.total_page) * 100
+        rounded_progress_rate = round(progress_rate)
         remaining_days = (book.planned_end_date - datetime.date.today())/(3600*24)
 
-        dashboard_list.append({"book_title": book.title, "progress_rate": progress_rate, "remaining_days": remaining_days})
+        dashboard_list.append({"book_title": book.title, "progress_rate": rounded_progress_rate, "remaining_days": remaining_days})
 
 
     # daily_logsのdateリストを取得
@@ -48,16 +50,21 @@ def get_dashboard(request: Request, db: Session = Depends(get_db)):
     unique_date = set(reading_date_list)
     reading_date=list(unique_date)
 
-    # # user_awardsのdateリストを取得
-    # award_date_list = [award.date for award in db.query(models.User_award.award_date).filter(models.User_award.user_id == user_id).all()]
-    # award_list = [award.date for award in award_date_list]
-    # award_unique_date = set(award_list)
-    # award_date = list(award_unique_date)
+ 
+    # user_awardsのdateリストを取得
+    award_date_list = db.query(models.User_award.award_date).\
+        filter(models.User_award.user_id == user_id).\
+        all()
+    
+    award_date_list = [award.award_date for award in award_date_list]
+    award_unique_date = set(award_date_list)
+    award_date = list(award_unique_date)
+
 
     response = {
         "dashboard": dashboard_list,
-        "reading_dates": reading_date,
-        # "award_dates": award_date
+        "reading_dates": sorted(reading_date),
+        "award_dates": sorted(award_date)
     }
 
     return response

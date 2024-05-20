@@ -13,10 +13,10 @@ from .routers.create_daily_log import router as create_daily_log
 from .routers.get_dashboard import router as get_dashboard
 from .routers.get_my_books_title import router as get_my_books_title
 from .routers.get_library import router as get_library
+from .routers.get_book_detail import router as get_book_detail
 from .routers.graph import router as graph
-from .routers.awards import router as awards
+from .routers.get_awards import router as get_awards
 from fastapi.middleware.cors import CORSMiddleware
-
 # models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -37,8 +37,9 @@ app.include_router(logout_router, prefix="/api/logout", tags=["logout"])
 app.include_router(create_book_router, prefix="/api/books", tags=["create_book"])
 app.include_router(create_daily_log, prefix="/api/logs", tags=["create_daily_log"])
 app.include_router(get_dashboard, prefix="/api/dashboard", tags=["get_dashboard"])
-app.include_router(get_my_books_title, prefix="/api/my_books_title", tags=["get_my_books_title"])
+app.include_router(get_my_books_title, prefix="/api/books", tags=["get_my_books_title"])
 app.include_router(get_library, prefix="/api/library", tags=["get_library"])
 app.include_router(graph, prefix="/api/graph", tags=["graph"])
-app.include_router(awards, prefix="/api/awards", tags=["awards"])
+app.include_router(get_awards, prefix="/api/awards", tags=["awards"])
+app.include_router(get_book_detail, prefix="/api/books", tags=["book_details"])
 
