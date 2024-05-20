@@ -8,7 +8,7 @@ from ..session_store import sessions
 
 router = APIRouter()
 
-@router.get("/")
+@router.get("/{my_book_id}/details")
 def get_book_detail(request: Request, my_book_id: int, db: Session = Depends(get_db)):
     session_id = request.cookies.get("session_id")
     if session_id not in sessions:

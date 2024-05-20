@@ -38,12 +38,12 @@ export default function Login() {
         if (!response.ok) {
           throw new Error("Login failed");
         }
-        console.log("respon");
+        console.log("response:", response);
         return response.json();
       })
       .then((data) => {
         console.log("data:", data.session_id);
-        const sessionId = data.sessionId;
+        const sessionId = data.session_id;
         // セッションIDをCookieに保存
         Cookies.set("session_id", sessionId, {
           expires: 7,

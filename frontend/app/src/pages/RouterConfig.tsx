@@ -5,6 +5,8 @@ import Home from "./home";
 import Graph from "./graph";
 import Mission from "./mission";
 import Library from "./library";
+import Login from "./login";
+import Signup from "./signup";
 
 function RouterConfig() {
   return (
@@ -18,6 +20,8 @@ function RouterConfig() {
             <Route path="/mission" element={<Mission />} />
             <Route path="/library" element={<Library />} />
           </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
     </>
