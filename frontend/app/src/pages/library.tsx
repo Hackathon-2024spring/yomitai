@@ -1,5 +1,5 @@
 import { Select } from "@headlessui/react";
-import Header from "../components/Header";
+// import Header from "../components/Header";
 import { useRef, useState } from "react";
 // import './App.css';
 // import ImageGallery from './ImageGallery';
@@ -26,7 +26,7 @@ export default function Library() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <section className="h-screen w-screen bg-yellow-50 text-xl text-gray-700">
         <div className="container mx-auto flex divide-x divide-gray-400">
           <div className=" mx-auto flex w-2/5 flex-col items-center p-4 ">
