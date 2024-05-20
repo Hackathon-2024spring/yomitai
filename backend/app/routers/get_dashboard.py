@@ -21,7 +21,7 @@ def get_dashboard(request: Request, db: Session = Depends(get_db)):
     # セッションIDからuser.idを取得し、end_dateがnullであるものをフィルタ
     dashboard_list = []
     my_books = db.query(models.My_book).filter(
-        models.My_book.user_id == user_id,
+        # models.My_book.user_id == user_id,
         models.My_book.end_date == None
     ).all()
 
