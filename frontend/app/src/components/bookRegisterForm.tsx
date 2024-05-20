@@ -16,30 +16,53 @@ interface bookRegisterFormProps {
   onClose: () => void; // モーダルを閉じる関数
 }
 
+interface BookForm {
+  title: string;
+  author: string;
+  publisher: string;
+  total_page: number;
+  image: string;
+  created_at: string;
+  start_date: string;
+  planned_end_date: string;
+  isbn_code: number;
+  genre: string;
+  tag: string[];
+}
+
 export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
   const { bookInfo } = useBookContext();
-  const [bookForm, setBookForm] = useState({
+  const [bookForm, setBookForm] = useState<BookForm>({
     title: bookInfo.title || "",
-    authors: bookInfo.authors || "",
+    author: bookInfo.authors || "",
     publisher: bookInfo.publisher || "",
-    pages: bookInfo.pages || 0,
+    total_page: Number(bookInfo.pages) || 0,
+    image: "",
+    created_at: new Date().toISOString(),
+    start_date: new Date().toISOString().split('T')[0],
+    planned_end_date: "",
+    isbn_code: bookInfo.isbn ? parseInt(bookInfo.isbn, 10) : 0,
     genre: "",
-    tag: "",
-    date: "",
-    isbn: bookInfo.isbn || "",
+    tag: [],
   });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
-    setBookForm({ ...bookForm, [name]: value });
+    if (name === "tag") {
+      setBookForm({ ...bookForm, [name]: value.split(",") });
+    } else if (name === "total_page" || name === "isbn_code") {
+      setBookForm({ ...bookForm, [name]: parseInt(value, 10) });
+    } else {
+      setBookForm({ ...bookForm, [name]: value });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/books", {
+      const response = await fetch("http://localhost:8000/api/books", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -84,8 +107,8 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
                   </Label>
                   <Input
                     className="rounded-lg border p-2 text-center"
-                    name="authors"
-                    value={bookForm.authors}
+                    name="author"
+                    value={bookForm.author}
                     onChange={handleChange}
                   />
                 </Field>
@@ -106,8 +129,9 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
                   </Label>
                   <Input
                     className="rounded-lg border p-2 text-center"
-                    name="pages"
-                    value={bookForm.pages}
+                    name="total_page"
+                    type="number"
+                    value={bookForm.total_page}
                     onChange={handleChange}
                   />
                 </Field>
@@ -133,7 +157,7 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
                   <Input
                     className="rounded-lg border p-2 text-center"
                     name="tag"
-                    value={bookForm.tag}
+                    value={bookForm.tag.join(",")}
                     onChange={handleChange}
                   />
                 </Field>
@@ -143,8 +167,9 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
                   </Label>
                   <Input
                     className="rounded-lg border p-2 text-center"
-                    name="date"
-                    value={bookForm.date}
+                    name="planned_end_date"
+                    type="date"
+                    value={bookForm.planned_end_date}
                     onChange={handleChange}
                   />
                 </Field>
@@ -154,8 +179,32 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
                   </Label>
                   <Input
                     className="rounded-lg border p-2 text-center"
-                    name="isbn"
-                    value={bookForm.isbn}
+                    name="isbn_code"
+                    type="number"
+                    value={bookForm.isbn_code}
+                    onChange={handleChange}
+                  />
+                </Field>
+                <Field className="m-2 grid grid-cols-2">
+                  <Label className="mr-2 flex items-center justify-center">
+                    画像
+                  </Label>
+                  <Input
+                    className="rounded-lg border p-2 text-center"
+                    name="image"
+                    value={bookForm.image}
+                    onChange={handleChange}
+                  />
+                </Field>
+                <Field className="m-2 grid grid-cols-2">
+                  <Label className="mr-2 flex items-center justify-center">
+                    読了開始日
+                  </Label>
+                  <Input
+                    className="rounded-lg border p-2 text-center"
+                    name="start_date"
+                    type="date"
+                    value={bookForm.start_date}
                     onChange={handleChange}
                   />
                 </Field>
@@ -182,3 +231,4 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
     </>
   );
 }
+
