@@ -23,7 +23,6 @@ interface BookForm {
   total_page: number;
   image: string;
   created_at: string;
-  updated_at: string;
   start_date: string;
   planned_end_date: string;
   isbn_code: number;
@@ -40,7 +39,6 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
     total_page: Number(bookInfo.pages) || 0,
     image: "",
     created_at: new Date().toISOString(),
-    updated_at: "",
     start_date: new Date().toISOString().split('T')[0],
     planned_end_date: "",
     isbn_code: bookInfo.isbn ? parseInt(bookInfo.isbn, 10) : 0,
@@ -54,6 +52,8 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
     const { name, value } = e.target;
     if (name === "tag") {
       setBookForm({ ...bookForm, [name]: value.split(",") });
+    } else if (name === "total_page" || name === "isbn_code") {
+      setBookForm({ ...bookForm, [name]: parseInt(value, 10) });
     } else {
       setBookForm({ ...bookForm, [name]: value });
     }
