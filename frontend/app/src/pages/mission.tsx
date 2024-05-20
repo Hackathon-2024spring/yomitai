@@ -1,9 +1,9 @@
-import Header from "../components/Header";
+// import Header from "../components/Header";
 
 export default function Mission() {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <section className="h-screen w-screen bg-yellow-50 text-xl">
         <div className="text-gray flex justify-center">
           <div className="relative mx-2 mt-4 flex flex-col items-center rounded-xl bg-green-100 text-gray-600 shadow-md">

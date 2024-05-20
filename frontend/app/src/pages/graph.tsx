@@ -1,11 +1,11 @@
-import Header from "../components/Header";
+// import Header from "../components/Header";
 import RadioButton from "../components/togleButton";
 import { BarChart, PieChart } from "@mui/x-charts";
 
 export default function Graph() {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <section className="h-screen w-screen bg-yellow-50 text-xl">
         <div className="text-gray-600">
           <div className="flex items-center">

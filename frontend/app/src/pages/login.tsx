@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+import Cookies from "js-cookie";
 
 type LoginForm = {
   user_name: string;
@@ -36,10 +38,18 @@ export default function Login() {
         if (!response.ok) {
           throw new Error("Login failed");
         }
+        console.log("response:", response);
         return response.json();
       })
       .then((data) => {
-        console.log("Login success:", data);
+        console.log("data:", data.session_id);
+        const sessionId = data.session_id;
+        // セッションIDをCookieに保存
+        Cookies.set("session_id", sessionId, {
+          expires: 7,
+          secure: true,
+          sameSite: "Strict",
+        });
         navigate("/");
       })
       .catch((error) => {
