@@ -4,7 +4,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 // import axios from "axios";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
+import { useState } from "react";
 
 type LoginForm = {
   user_name: string;
@@ -20,6 +21,7 @@ const LoginScheme: z.ZodType<LoginForm> = z.object({
 
 export default function Login() {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(""); // エラーメッセージ用のステート
   const {
     register,
     handleSubmit,
@@ -33,27 +35,30 @@ export default function Login() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+      credentials: "include", // クッキーを受け取るために必要
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Login failed");
+          return response.json().then((errors) => {
+            throw new Error(errors.detail || "Login failed");
+          });
         }
         console.log("response:", response);
         return response.json();
       })
       .then((data) => {
         console.log("data:", data.session_id);
-        const sessionId = data.session_id;
-        // セッションIDをCookieに保存
-        Cookies.set("session_id", sessionId, {
-          expires: 7,
-          secure: true,
-          sameSite: "Strict",
-        });
+        // const sessionId = data.session_id;
+        // // セッションIDをCookieに保存
+        // Cookies.set("session_id", sessionId, {
+        //   expires: 7,
+        //   secure: true,
+        //   sameSite: "Strict",
+        // });
         navigate("/");
       })
       .catch((error) => {
-        console.log("Login error:", error);
+        setErrorMessage(error.message); // エラーメッセージをセット
       });
   };
 
@@ -117,6 +122,9 @@ export default function Login() {
               >
                 ログイン
               </button>
+              {errorMessage && (
+                <div className="mt-4 text-red-500">{errorMessage}</div> // エラーメッセージを表示
+              )}
             </form>
           </div>
           <Link
