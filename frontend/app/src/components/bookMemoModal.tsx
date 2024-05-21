@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -12,6 +12,7 @@ import {
   Textarea,
 } from "@headlessui/react";
 import { useBookContext } from "../contexts/bookContext";
+import Cookies from "js-cookie";
 
 interface bookRegisterFormProps {
   onClose: () => void; // モーダルを閉じる関数
@@ -29,6 +30,29 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
     date: "",
     isbn: bookInfo.isbn || "",
   });
+
+  type ReceiveItem = {
+    id: number;
+    book_title: string;
+  };
+
+  useEffect(() => {
+    (async () => {
+      console.log("Memo_modal api fetch START");
+      const sessionData = Cookies.get("session_id");
+      console.log("Get Cookies: ", sessionData);
+      const headers = new Headers({
+        "Set-Cookie": `session_id=${sessionData}`,
+      });
+      const res = await fetch("http://localhost:8000/api/books", {
+        method: "GET",
+        credentials: "include",
+        headers,
+      });
+      const data = await res.json();
+      console.log("Get APIData: ", data);
+    })();
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -73,7 +97,7 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
                   <Select
                     className="rounded-lg border p-2"
                     name="genre"
-                    value={bookForm.genre}
+                    value={bookForm.title}
                     onChange={handleChange}
                   >
                     <option value="">選択して下さい</option>
@@ -144,3 +168,34 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
     </>
   );
 }
+
+//   const item = data.items[0];
+//   const title = item.volumeInfo.title;
+//   const authors = item.volumeInfo.authors.join(", ");
+//   const publisher = item.volumeInfo.publisher;
+//   const pages = item.volumeInfo.pageCount;
+
+//   setBookInfo({
+//     title: title,
+//     authors: authors,
+//     publisher: publisher,
+//     pages: pages,
+//     isbn: isbncode,
+//   });
+// };
+// const handleSubmit = (e) => {
+//   e.preventDefault()
+//   // console.log(ref.current.value)
+
+//   // API URL
+//   const endpointURL =
+//     `https://pixabay.com/api/?key=43385307-62aaa7aff1ec0a25276441c07&q=${ref.current.value}&image_type=photo`
+//   // APIを叩くデータフェッチング　　fetch or axios
+//   fetch(endpointURL)
+//   .then((res) => {
+//     return res.json()
+//   })
+//   .then((data) => {
+//     setFetchData(data.hits)
+//   })
+// }
