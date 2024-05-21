@@ -18,7 +18,7 @@ export default function Home() {
       try {
         console.log("request send");
         const response = await axios.get(
-          "http://loclahost:8000/api/dashboard",
+          "http://localhost:8000/api/dashboard",
           {
             headers: {
               Authorization: `Bearer ${sessionId}`,
