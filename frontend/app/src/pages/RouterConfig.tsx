@@ -8,18 +8,15 @@ import Login from "./login";
 import Signup from "./signup";
 
 function RouterConfig() {
-  console.log("RouterConfig rendered");
   return (
     <BrowserRouter>
-      <Header />
       <Routes>
-        {/* <Route path="/" element={<Header />}> */}
-        {/* <Route index element={<Home />} /> */}
-        <Route path="/" element={<Home />} />
-        <Route path="/graph" element={<Graph />} />
-        <Route path="/mission" element={<Mission />} />
-        <Route path="/library" element={<Library />} />
-        {/* </Route> */}
+        <Route path="/" element={<Header />}>
+          <Route index element={<Home />} />
+          <Route path="/graph" element={<Graph />} />
+          <Route path="/mission" element={<Mission />} />
+          <Route path="/library" element={<Library />} />
+        </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
