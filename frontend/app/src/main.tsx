@@ -1,21 +1,14 @@
-import React from "react";
+
+
+// import React from "react";
 // import ReactDOM from "react-dom";
-import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import { createRoot } from "react-dom/client";
 
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>,
-//   document.getElementById("root"),
-// );
 
+// React18での正しいレンダリングの記述に変更
 const container = document.getElementById("root");
 const root = createRoot(container!);
+root.render(<App />);
 
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-);
