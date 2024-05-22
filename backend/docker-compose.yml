@@ -15,7 +15,7 @@ services:
       MYSQL_USER: mysql
       MYSQL_PASSWORD: example
       MYSQL_DB: devdb
-      DATABASE_URL: mysql://mysql:example@db:3306/devdb
+      DATABASE_URL: mysql://mysql:example@localhost:3306/devdb
     depends_on:
       - db
 
