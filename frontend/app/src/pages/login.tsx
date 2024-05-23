@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import { useState } from "react";
 
 type LoginForm = {
@@ -31,11 +30,11 @@ export default function Login() {
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
     fetch("http://localhost:8000/api/login", {
       method: "POST",
+      credentials: "include", // クッキーを受け取るために必要
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-      credentials: "include", // クッキーを受け取るために必要
     })
       .then((response) => {
         if (!response.ok) {
@@ -48,13 +47,13 @@ export default function Login() {
       })
       .then((data) => {
         console.log("data:", data.session_id);
-        // const sessionId = data.session_id;
-        // // セッションIDをCookieに保存
-        // Cookies.set("session_id", sessionId, {
-        //   expires: 7,
-        //   secure: true,
-        //   sameSite: "Strict",
-        // });
+        const sessionId = data.session_id;
+        // セッションIDをCookieに保存
+        Cookies.set("session_id", sessionId, {
+          expires: 7,
+          secure: true,
+          sameSite: "Strict",
+        });
         navigate("/");
       })
       .catch((error) => {
