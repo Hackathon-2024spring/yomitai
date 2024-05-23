@@ -1,4 +1,3 @@
-// import Header from "../components/Header";
 import { CalendarComponent } from "../components/calendarComponent";
 import BookRegistModals from "../components/bookRegistModals";
 import axios from "axios";
@@ -8,35 +7,32 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [data, setData] = useState(null);
 
+  const fetchData = async () => {
+    const sessionId = Cookies.get("session_id");
+    if (!sessionId) {
+      console.error("No session ID found: ", sessionId);
+      return;
+    }
+    try {
+      console.log("request send");
+      const response = await axios.get("http://localhost:8000/api/dashboard", {
+        headers: {
+          Authorization: `Bearer ${sessionId}`,
+        },
+      });
+      setData(response.data);
+      console.log("get data:", data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const sessionId = Cookies.get("session_id");
-      if (!sessionId) {
-        console.error("No session ID found");
-        return;
-      }
-      try {
-        console.log("request send");
-        const response = await axios.get(
-          "http://localhost:8000/api/dashboard",
-          {
-            headers: {
-              Authorization: `Bearer ${sessionId}`,
-            },
-          },
-        );
-        setData(response.data);
-        console.log("get data:", data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchData();
   }, []);
 
   return (
     <>
-      {/* <Header /> */}
       {/* Sectionをコンポーネント化 */}
       <section className="h-screen w-screen bg-yellow-50 text-xl">
         <div className=" mx-auto flex flex-col py-8 md:flex-row">

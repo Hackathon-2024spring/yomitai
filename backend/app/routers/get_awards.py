@@ -11,6 +11,7 @@ from app.models import User_award,Award
 from ..session_store import sessions
 
 router = APIRouter()
+@router.get("/")
 
 def get_next_goal(award_type: str, current_criteria: int) -> int:
     goal_data = {
@@ -24,8 +25,6 @@ def get_next_goal(award_type: str, current_criteria: int) -> int:
         if goal > current_criteria:
             return goal
     return -1 # すべての目標が達成されている場合
-
-@router.get("/")
 
 def read_awards(request: Request, db: Session = Depends(get_db)):
     session_id = request.cookies.get("session_id")
