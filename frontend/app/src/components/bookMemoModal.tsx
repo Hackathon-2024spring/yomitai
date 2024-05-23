@@ -11,7 +11,6 @@ import {
   Select,
   Textarea,
 } from "@headlessui/react";
-import { useBookContext } from "../contexts/bookContext";
 import Cookies from "js-cookie";
 
 interface bookRegisterFormProps {
@@ -19,23 +18,23 @@ interface bookRegisterFormProps {
 }
 
 export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
-  const { bookInfo } = useBookContext();
-  const [bookForm, setBookForm] = useState({
-    title: bookInfo.title || "",
-    authors: bookInfo.authors || "",
-    publisher: bookInfo.publisher || "",
-    pages: bookInfo.pages || 0,
-    genre: "",
-    tag: "",
-    date: "",
-    isbn: bookInfo.isbn || "",
+  const [bookMemoForm, setBookMemoForm] = useState({
+    title: "",
+    page_read: 0,
+    memo: "",
+    reading_date: "",
+    created_at: new Date(),
+    updated_at: new Date(),
   });
 
+  const [options, setOptions] = useState([]);
+
   type ReceiveItem = {
-    id: number;
-    book_title: string;
+    my_book_id: number;
+    my_book_title: string;
   };
 
+  // ページ遷移後のデータ取得関数実行
   useEffect(() => {
     (async () => {
       console.log("Memo_modal api fetch START");
@@ -51,25 +50,48 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
       });
       const data = await res.json();
       console.log("Get APIData: ", data);
+      setOptions(data);
     })();
   }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
+    // console.log("HandleChange: ", e.target);
     const { name, value } = e.target;
-    setBookForm({ ...bookForm, [name]: value });
+    setBookMemoForm({ ...bookMemoForm, [name]: value });
+    console.log("bookMemoForm: ", bookMemoForm);
+  };
+
+  const dateUpdated = () => {
+    const date_time = new Date();
+    setBookMemoForm({
+      ...bookMemoForm,
+      created_at: date_time,
+      updated_at: date_time,
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/books", {
+      const sessionData = Cookies.get("session_id");
+      console.log("Get Cookies: ", sessionData);
+      const headers = new Headers({
+        "Content-Type": "application/json",
+        "Set-Cookie": `session_id=${sessionData}`,
+      });
+      console.log("headers: ", headers);
+
+      dateUpdated;
+      const Req_Body = JSON.stringify(bookMemoForm);
+      console.log("Req_Body: ", Req_Body);
+
+      const response = await fetch("http://localhost:8000/api/logs", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookForm),
+        credentials: "include",
+        headers,
+        body: JSON.stringify(bookMemoForm),
       });
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -96,29 +118,24 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
                   <Label className="">書籍タイトル</Label>
                   <Select
                     className="rounded-lg border p-2"
-                    name="genre"
-                    value={bookForm.title}
+                    name="title"
+                    value={bookMemoForm.title}
                     onChange={handleChange}
                   >
                     <option value="">選択して下さい</option>
-                    <option value="Tailwind CSS 実践入門">
-                      Tailwind CSS 実践入門
-                    </option>
-                    <option value="リーダブルコード">リーダブルコード</option>
+                    {options.map((book: ReceiveItem) => (
+                      <option key={book.my_book_id} value={book.my_book_title}>
+                        {book.my_book_title}
+                      </option>
+                    ))}
                   </Select>
-                  {/* <Input
-                    className="w-80 flex-grow rounded-lg border p-2"
-                    name="title"
-                    value={bookForm.title}
-                    onChange={handleChange}
-                  /> */}
                 </Field>
                 <Field className="mx-4 mb-2 flex flex-col">
                   <Label className="">読み終わったページNo.</Label>
                   <Input
                     className="rounded-lg border p-1"
-                    name="authors"
-                    value={bookForm.authors}
+                    name="page_read"
+                    value={bookMemoForm.page_read}
                     onChange={handleChange}
                   />
                 </Field>
@@ -127,23 +144,29 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
                   {/* Date pickerを実装する。 */}
                   <Input
                     className="rounded-lg border p-1"
-                    name="publisher"
-                    value={bookForm.publisher}
+                    name="reading_date"
+                    value={bookMemoForm.reading_date}
                     onChange={handleChange}
                   />
                 </Field>
-                <Field className="mx-4 mb-2 flex flex-col">
+                {/* <Field className="mx-4 mb-2 flex flex-col">
                   <Label className="">タグ</Label>
                   <Input
                     className="rounded-lg border p-1"
-                    name="pages"
-                    value={bookForm.tag}
+                    name="tag"
+                    value={bookMemoForm.tag}
                     onChange={handleChange}
                   />
-                </Field>
+                </Field> */}
                 <Field className="mx-4 mb-2 flex flex-col">
                   <Label className="">メモ</Label>
-                  <Textarea className={"rounded-lg border"} rows={4} />
+                  <Textarea
+                    className={"rounded-lg border"}
+                    rows={4}
+                    name="memo"
+                    value={bookMemoForm.memo}
+                    onChange={handleChange}
+                  />
                 </Field>
               </Fieldset>
               <div className="mx-auto flex w-[50%] flex-col">
@@ -168,34 +191,3 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
     </>
   );
 }
-
-//   const item = data.items[0];
-//   const title = item.volumeInfo.title;
-//   const authors = item.volumeInfo.authors.join(", ");
-//   const publisher = item.volumeInfo.publisher;
-//   const pages = item.volumeInfo.pageCount;
-
-//   setBookInfo({
-//     title: title,
-//     authors: authors,
-//     publisher: publisher,
-//     pages: pages,
-//     isbn: isbncode,
-//   });
-// };
-// const handleSubmit = (e) => {
-//   e.preventDefault()
-//   // console.log(ref.current.value)
-
-//   // API URL
-//   const endpointURL =
-//     `https://pixabay.com/api/?key=43385307-62aaa7aff1ec0a25276441c07&q=${ref.current.value}&image_type=photo`
-//   // APIを叩くデータフェッチング　　fetch or axios
-//   fetch(endpointURL)
-//   .then((res) => {
-//     return res.json()
-//   })
-//   .then((data) => {
-//     setFetchData(data.hits)
-//   })
-// }
