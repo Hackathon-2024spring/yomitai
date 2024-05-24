@@ -9,17 +9,24 @@ from ..session_store import sessions  # session_store.pyからsessions辞書を�
 
 router = APIRouter()
 
-@router.post("/")
 
-def login(login_data: Login, response: Response, db: Session = Depends(database.get_db)):
+@router.post("/")
+def login(
+    login_data: Login, response: Response, db: Session = Depends(database.get_db)
+):
     # ユーザー認証
     user = authenticate_user(db, login_data.user_name, login_data.password)
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="IDまたはパスワードが間違っています")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="IDまたはパスワードが間違っています",
+        )
 
     # セッションIDを生成してクッキーに保存
     session_id = secrets.token_urlsafe()
-    response.set_cookie(key="session_id", value=session_id, httponly=True, secure=False, samesite='Lax') # 本番環境ではsecure=TrueにしてHTTPS接続のみクッキーが設定されるように戻す！
+    response.set_cookie(
+        key="session_id", value=session_id, httponly=False, secure=False, samesite="Lax"
+    )  # 本番環境ではsecure=TrueにしてHTTPS接続のみクッキーが設定されるように戻す！
 
     # セッションIDに対応するユーザーIDをインメモリストアに保存
     sessions[session_id] = user.id  # user.idは認証されたユーザーのID
