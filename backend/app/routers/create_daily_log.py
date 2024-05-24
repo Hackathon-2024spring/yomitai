@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from .. import crud, schemas
 from ..database import get_db
 from ..session_store import sessions
+from .. import models
+from datetime import date
 
 router = APIRouter()
 
@@ -27,4 +29,24 @@ def read_book(request: Request, daily_log: schemas.ReadBookRequest, db: Session 
         memo_text=f"{daily_log.reading_date}: {daily_log.memo}"
     )
     
+    # daily_logの数をカウント
+    log_count = db.query(models.Daily_log).join(models.My_book).filter(models.My_book.user_id == user_id).count()
+
+    # awardsテーブルのcriteriaと一致するレコードを取得
+    award_criteria = db.query(models.Award).filter(models.Award.award_type == "times", models.Award.award_criteria == log_count).first()
+
+    if award_criteria:
+        # awardsテーブルのcriteriaと一致する場合、user_awardにレコードを追加
+        new_user_award = models.User_award(
+            award_date = date.today(),
+            user_id = user_id,
+            award_id = award_criteria.id
+        )
+        db.add(new_user_award)
+        db.commit()
+        print("記録しました")
+    else:
+        pass
+        print("レコードなし")
+
     return {"message": "Reading log and memo saved successfully"}

@@ -222,32 +222,38 @@ INSERT INTO users(user_name,password,email,created_at,updated_at)value('2222','$
 INSERT INTO users(user_name,password,email,created_at,updated_at)value('3333','$2b$12$NERZd7FRGKOtgdhfg.q7yugcUCWaWgC9I5UZPTkLol.fMtIvn8FP2','3333','2024-05-06 12:04:36','2024-05-06 12:04:36');
 
 INSERT INTO books(genre_id,title,author,publisher, total_page, isbn_code, image, created_at,updated_at)value(10,'テスト用データ','著者','出版社',600,1234556789,'null','2024-05-06 12:04:36','2024-05-06 12:04:36');
-INSERT INTO my_books(user_id, book_id,genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(2,1,13,'テスト用データ2','著者','出版社',600,'2024-05-01','2024-05-20');
-INSERT INTO my_books(user_id, genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(2,13,'テスト用データ3','著者','出版社',347,'2024-05-03','2024-05-30');
-INSERT INTO my_books(user_id, genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(2,18,'テスト用データ4','著者','出版社',545,'2024-05-03','2024-05-30');
-INSERT INTO my_books(user_id, genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(3,19,'テスト用データ5','著者','出版社',229,'2024-05-03','2024-05-30');
-INSERT INTO my_books(user_id, genre_id,title,author,publisher, total_page, start_date, planned_end_date)value(2,22,'テスト用データ6','著者','出版社',482,'2024-05-03','2024-05-30');
+INSERT INTO my_books(user_id, title,author,publisher, image, total_page, start_date, planned_end_date)value(2,'Notionライフハック 暮らしに役立つ36のアイデアとテンプレート','Rei','翔泳社','http://books.google.com/books/content?id=DEjnEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',218,'2024-05-01','2024-05-20');
+INSERT INTO my_books(user_id, title,author,publisher, image, total_page, start_date, planned_end_date, end_date)value(2,'マスタリングTCP/IP　入門編（第6版）','井上 直也','株式会社 オーム社','http://books.google.com/books/content?id=01LADwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',493,'2024-05-03','2024-05-30', '2024-05-19');
+INSERT INTO my_books(user_id, title,author,publisher, image, total_page, start_date, planned_end_date)value(2,'リーダブルコード','Dustin Boswell','OReilly Media, Inc.', 'http://books.google.com/books/content?id=Wx1dLwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',237,'2024-05-03','2024-05-30');
+INSERT INTO my_books(user_id, title,author,publisher, image, total_page, start_date, planned_end_date)value(3,'達人に学ぶDB設計~徹底指南書 初級者で終わりたくないあなたへ','ミック','翔泳社', 'http://books.google.com/books/content?id=979e5Q6DELsC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',363,'2024-05-03','2024-05-30');
+INSERT INTO my_books(user_id, title,author,publisher, image, total_page, start_date, planned_end_date)value(2,'独学大全','読書猿','ダイヤモンド社', 'http://books.google.com/books/content?id=MrgDEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',844,'2024-05-03','2024-05-30');
 
-INSERT INTO tags(tag_name)value('試験用タグ');
-INSERT INTO tags(tag_name)value('試験用タグ2');
-INSERT INTO tags(tag_name)value('試験用タグ3');
-INSERT INTO book_tags(my_book_id, tag_id)value(1,1);
-INSERT INTO book_tags(my_book_id, tag_id)value(1,3);
+INSERT INTO tags(tag_name)value('フロントエンド');
+INSERT INTO tags(tag_name)value('バックエンド');
+INSERT INTO tags(tag_name)value('インフラ');
+INSERT INTO book_tags(my_book_id, tag_id)value(2,3);
+INSERT INTO book_tags(my_book_id, tag_id)value(3,1);
+INSERT INTO book_tags(my_book_id, tag_id)value(3,2);
+INSERT INTO book_tags(my_book_id, tag_id)value(4,2);
+
 INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,40,'2024-05-10','2024-05-10: 読書１回目');
-INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,30,'2024-05-10','2024-05-10: 読書２回目');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,30,'2024-05-11','2024-05-11: 読書２回目');
 INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(1,20,'2024-05-11','2024-05-11: 読書３回目');
-INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(2,50,'2024-05-12','2024-05-12: 読書４回目');
-INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(3,80,'2024-05-13','2024-05-13: 読書５回目');
-INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(2,140,'2024-05-13','2024-05-13: 読書６回目');
-INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(3,149,'2024-05-14','2024-05-14: 読書７回目');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(2,50,'2024-05-12','2024-05-12: OSI参照モデルについてざっくりわかった');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(3,80,'2024-05-13','2024-05-13: コードがJavaでよくわからない...');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(2,140,'2024-05-13','2024-05-13: IPアドレスはネットワーク上の住所でこれがないとどこにデータを届けていいかわからなくなってしまう');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(2,149,'2024-05-14','2024-05-14: DNSって実は凄い！こいつが現在のインターネットを支えている！');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(3,110,'2024-05-15','2024-05-15: なんとなくわかるようなわからないような');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(4,54,'2024-05-16','2024-05-16: 第３正規化までは普通に使う！しっかりできるようになろう！');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(4,33,'2024-05-17','2024-05-17: 第４正規化が難しい...');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(5,20,'2024-05-18','2024-05-18: 読書の仕方にルールはない！とにかく読みまくる！！');
+INSERT INTO daily_logs(my_book_id,page_read,date,memo)value(2,210,'2024-05-19','2024-05-19: 読了！勉強になった。');
+
 
 INSERT INTO user_awards(user_id,award_id,award_date)value(2,1,'2024-01-10');
 INSERT INTO user_awards(user_id,award_id,award_date)value(2,2,'2024-01-20');
-INSERT INTO user_awards(user_id,award_id,award_date)value(2,3,'2024-03-12');
 INSERT INTO user_awards(user_id,award_id,award_date)value(2,7,'2024-01-10');
 INSERT INTO user_awards(user_id,award_id,award_date)value(2,8,'2024-01-30');
-INSERT INTO user_awards(user_id,award_id,award_date)value(2,9,'2024-02-20');
-INSERT INTO user_awards(user_id,award_id,award_date)value(2,10,'2024-03-10');
 INSERT INTO user_awards(user_id,award_id,award_date)value(2,11,'2024-05-10');
 INSERT INTO user_awards(user_id,award_id,award_date)value(2,14,'2024-01-10');
 
