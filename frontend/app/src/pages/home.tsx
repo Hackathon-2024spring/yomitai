@@ -1,14 +1,14 @@
 import { CalendarComponent } from "../components/calendarComponent";
 import BookRegistModals from "../components/bookRegistModals";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [data, setData] = useState(null);
 
   const fetchData = async () => {
-    const sessionId = Cookies.get("session_id");
+    // const sessionId = Cookies.get("yomitai_session");
+    const sessionId = sessionStorage.getItem("yomitai_session");
     if (!sessionId) {
       console.error("No session ID found: ", sessionId);
       return;

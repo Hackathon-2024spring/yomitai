@@ -11,7 +11,6 @@ import {
   Select,
   Textarea,
 } from "@headlessui/react";
-import Cookies from "js-cookie";
 
 interface bookRegisterFormProps {
   onClose: () => void; // モーダルを閉じる関数
@@ -36,17 +35,11 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
 
   // ページ遷移後のデータ取得関数実行
   useEffect(() => {
+    // 本のタイトルリストを取得
     (async () => {
-      console.log("Memo_modal api fetch START");
-      const sessionData = Cookies.get("session_id");
-      console.log("Get Cookies: ", sessionData);
-      const headers = new Headers({
-        "Set-Cookie": `session_id=${sessionData}`,
-      });
       const res = await fetch("http://localhost:8000/api/books", {
         method: "GET",
         credentials: "include",
-        headers,
       });
       const data = await res.json();
       console.log("Get APIData: ", data);
@@ -75,18 +68,16 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const sessionData = Cookies.get("session_id");
-      console.log("Get Cookies: ", sessionData);
       const headers = new Headers({
         "Content-Type": "application/json",
-        "Set-Cookie": `session_id=${sessionData}`,
       });
-      console.log("headers: ", headers);
 
+      // created_atとupdated_atを更新
       dateUpdated;
+
       const Req_Body = JSON.stringify(bookMemoForm);
       console.log("Req_Body: ", Req_Body);
-
+      // 読書記録投稿
       const response = await fetch("http://localhost:8000/api/logs", {
         method: "POST",
         credentials: "include",
