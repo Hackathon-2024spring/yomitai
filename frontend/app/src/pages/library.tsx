@@ -12,9 +12,46 @@ interface BookData {
   tags: string[];
 }
 
+interface BookDetail {
+  id: number;
+  title: string;
+  author: string;
+  publisher: string;
+  total_page: number;
+  image: string | null;
+  start_date: string;
+  planned_end_date: string;
+  end_date: string | null;
+  created_at: string;
+  updated_at: string;
+  user_id: number;
+  book_id: number;
+  genre_id: number;
+}
+
+interface Tag {
+  "book_tags.id": number;
+  tag_name: string;
+}
+
+interface Memo {
+  "daily_logs.id": number;
+  memo: string;
+}
+
+interface BookDetailsResponse {
+  book_detail: BookDetail[];
+  tags_list: Tag[];
+  memo_list: Memo[];
+}
+
 export default function Library() {
   const [fetchData, setFetchData] = useState<BookData[] | null>(null); // fetchData の初期状態を null に設定
+  const [bookDetails, setBookDetails] = useState<BookDetailsResponse | null>(
+    null,
+  );
   const ref = useRef<HTMLInputElement>(null);
+  const myBookId = 1; // いったん１
 
   useEffect(() => {
     fetch("http://localhost:8000/api/library", {
@@ -26,7 +63,16 @@ export default function Library() {
         console.log("Data received:", data); // デバッグ用ログ
         setFetchData(data.hits);
       });
-  }, []); // [] はコンポーネントの初回レンダリング時のみ実行するため
+    fetch(`http://localhost:8000/api/books/${myBookId}/details`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Book details received:", data); // デバッグ用ログ
+        setBookDetails(data);
+      });
+  }, [myBookId]); // myBookIdが変更されたときに再実行される
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -138,22 +184,26 @@ export default function Library() {
               className="relative mx-4 my-4 h-full w-full transform
                    rounded-xl bg-green-100 p-4 text-gray-600 shadow-md"
             >
+              {bookDetails === null ? (
+                <div>Loading...</div>
+              ) : (
               <div className="w-full p-4">
                 <div className="flex ">
                   <div className="mr-2">
                     <img
-                      src="../img/book_tailwind.jpg"
-                      alt="description"
+                      src={bookDetails.book_detail[0].image || "../../public/img/book_leadablecode.jpeg"
+                    } // デフォルト画像をとりあえずリーダブルコードの画像に設定
+                      alt={bookDetails.book_detail[0].title}
                       className="mr-4 h-40"
                     />
                   </div>
                   <div className="font-midium flex flex-grow flex-col">
                     <div className="mb-4 text-4xl underline underline-offset-8">
-                      tailwindcss 実践入門
+                    {bookDetails.book_detail[0].title}
                     </div>
                     <div className="mb-4">読書進捗ステータス情報</div>
                     <div className="my-4 mb-4 rounded-xl bg-cyan-100 p-4">
-                      タグ一覧
+                      タグ一覧: {bookDetails.tags_list.map(tag => tag.tag_name).join(", ")}
                     </div>
                     <textarea className="mb-4 rounded-xl bg-yellow-50 p-4">
                       メモ情報1
@@ -161,9 +211,11 @@ export default function Library() {
                     <textarea className="mb-4 rounded-xl bg-yellow-50 p-4">
                       メモ情報2
                     </textarea>
+                    ))}
                   </div>
                 </div>
               </div>
+              )}
             </div>
           </div>
         </div>
