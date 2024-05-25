@@ -39,6 +39,7 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
     // 本のタイトルリストを取得
     (async () => {
       const res = await fetch("http://localhost:8000/api/books", {
+
         method: "GET",
         credentials: "include",
       });
