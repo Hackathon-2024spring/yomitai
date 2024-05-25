@@ -43,7 +43,7 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
       const headers = new Headers({
         "Set-Cookie": `session_id=${sessionData}`,
       });
-      const res = await fetch("http://localhost:8000/api/books", {
+      const res = await fetch("http://localhost:8000/api/books/", {
         method: "GET",
         credentials: "include",
         headers,
