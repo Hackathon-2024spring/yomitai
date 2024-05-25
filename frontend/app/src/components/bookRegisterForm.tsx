@@ -39,7 +39,7 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
     total_page: Number(bookInfo.pages) || 0,
     image: "",
     created_at: new Date().toISOString(),
-    start_date: new Date().toISOString().split('T')[0],
+    start_date: new Date().toISOString().split("T")[0],
     planned_end_date: "",
     isbn_code: bookInfo.isbn ? parseInt(bookInfo.isbn, 10) : 0,
     genre: "",
@@ -64,6 +64,7 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
     try {
       const response = await fetch("http://localhost:8000/api/books", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -231,4 +232,3 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
     </>
   );
 }
-
