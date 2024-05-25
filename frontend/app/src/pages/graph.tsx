@@ -1,4 +1,3 @@
-// import Header from "../components/Header";
 import RadioButton from "../components/togleButton";
 import { BarChart, PieChart } from "@mui/x-charts";
 

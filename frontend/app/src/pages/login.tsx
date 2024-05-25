@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { useState } from "react";
 
 type LoginForm = {
@@ -47,13 +46,7 @@ export default function Login() {
       })
       .then((data) => {
         console.log("data:", data.session_id);
-        const sessionId = data.session_id;
-        // セッションIDをCookieに保存
-        Cookies.set("session_id", sessionId, {
-          expires: 7,
-          secure: true,
-          sameSite: "Strict",
-        });
+        sessionStorage.setItem("yomitai_session", data.session_id);
         navigate("/");
       })
       .catch((error) => {
