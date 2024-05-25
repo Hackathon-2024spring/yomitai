@@ -16,6 +16,7 @@ export default function Logout() {
       })
       .then((data) => {
         console.log(data.message);
+        sessionStorage.removeItem("yomitai_session");
         navigate("/login"); // ログインページにリダイレクト
       })
       .catch((error) => {

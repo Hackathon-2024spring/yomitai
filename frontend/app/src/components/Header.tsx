@@ -1,19 +1,19 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import BookMemoModalButton from "./bookMemoModalButton";
-import Cookies from "js-cookie";
 import { useEffect } from "react";
 import Logout from "./logoutButton";
 
 function Header() {
-  // const navigate = useNavigate();
-  // useEffect(() => {
-  //   const sessionId = Cookies.get("session_id");
-  //   if (!sessionId) {
-  //     console.error("No session ID found");
-  //     navigate("/login");
-  //     return;
-  //   }
-  // });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const sessionId = sessionStorage.getItem("yomitai_session");
+    if (!sessionId) {
+      console.error("No session ID found");
+      navigate("/login");
+      return;
+    }
+  });
 
   return (
     <>
