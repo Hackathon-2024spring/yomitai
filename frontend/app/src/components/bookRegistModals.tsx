@@ -19,7 +19,7 @@ export default function BookRegistModals() {
   return (
     <>
       <button
-        className="my-2 rounded-xl bg-green-400 px-2 py-1 text-lg text-white duration-300 hover:bg-green-500"
+        className="my-2 rounded-xl bg-cyan-400 px-2 py-1 text-lg text-white duration-300 hover:bg-cyan-500"
         onClick={openBarcodeReader} // ボタンがクリックされた時にモーダルを開く
       >
         書籍登録

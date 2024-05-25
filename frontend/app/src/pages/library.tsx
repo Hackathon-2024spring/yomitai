@@ -68,10 +68,12 @@ const BookCard: React.FC<BookCardProps> = ({ book, onClick }) => (
           />
         </div>
         <div className="flex flex-grow flex-col">
-          <div className="mx-2 font-light">{book.book_title}</div>
-          <div className="my-2 rounded-xl bg-cyan-100 p-2">
-            {book.tags.join(", ")}
-          </div>
+          <div className="mx-2 text-sm font-light">{book.book_title}</div>
+          {book.tags.length != 0 && (
+            <div className="my-2 rounded-xl bg-cyan-100 p-2 text-sm">
+              {book.tags.join(", ")}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -94,9 +96,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ details }) => (
           />
         </div>
         <div className="font-midium flex flex-grow flex-col">
-          <div className="mb-4 text-4xl underline underline-offset-8">
-            {details.book_detail[0].title}
-          </div>
+          <div className="mb-4 text-2xl">{details.book_detail[0].title}</div>
           <div className="mb-4">読書進捗ステータス情報</div>
           <div className="my-4 mb-4 rounded-xl bg-cyan-100 p-4">
             タグ: {details.tags_list.map((tag) => `#${tag.tag_name}`).join(" ")}
@@ -199,11 +199,14 @@ export default function Library() {
               >
                 <option value="">タグを選択</option>
                 {fetchData &&
-                  fetchData.map((data) => (
-                    <option key={data.book_id} value={data.tags}>
-                      {data.tags}
-                    </option>
-                  ))}
+                  fetchData.map(
+                    (data) =>
+                      data.tags.length != 0 && (
+                        <option key={data.book_id} value={data.tags}>
+                          {data.tags}
+                        </option>
+                      ),
+                  )}
               </Select>
             </form>
 

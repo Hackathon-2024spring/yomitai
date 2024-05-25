@@ -89,18 +89,18 @@ export default function Home() {
 }
 
 const BookCard = ({ book }) => (
-  <div className="relative m-auto h-28 w-96 transform rounded-xl bg-green-100 text-gray-600 shadow-md transition-transform hover:scale-105">
+  <div className="relative mx-auto mb-4 w-96 transform rounded-xl bg-green-100 text-gray-600 shadow-md transition-transform hover:scale-105">
     <div className="w-full p-4">
       <div className="flex">
         <div className="mr-2">
           <img src={book.image} alt={book.book_title} className="h-20" />
         </div>
-        <div className="flex flex-col">
-          <div className="mx-2 font-light">{book.book_title}</div>
+        <div className="flex flex-grow flex-col">
+          <div className="mx-2 text-sm font-light">{book.book_title}</div>
           <div>
             <div className="mx-2 mt-2 w-auto bg-blue-50">
               <div
-                className="bg-green-600 p-1 text-center text-xs leading-none text-white"
+                className="bg-green-600 p-1 text-center text-xs leading-none text-gray-600"
                 style={{ width: `${book.progress_rate}%` }}
               >
                 {book.progress_rate}%
