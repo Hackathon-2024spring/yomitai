@@ -21,7 +21,7 @@ def get_dashboard(request: Request, db: Session = Depends(get_db)):
     # セッションIDからuser.idを取得し、end_dateがnullであるものをフィルタ
     dashboard_list = []
     my_books = db.query(models.My_book).filter(
-        # models.My_book.user_id == user_id,
+        models.My_book.user_id == user_id,
         models.My_book.end_date == None
     ).all()
 
@@ -34,7 +34,7 @@ def get_dashboard(request: Request, db: Session = Depends(get_db)):
         rounded_progress_rate = round(progress_rate)
         remaining_days = (book.planned_end_date - datetime.date.today())/(3600*24)
 
-        dashboard_list.append({"book_title": book.title, "progress_rate": rounded_progress_rate, "remaining_days": remaining_days})
+        dashboard_list.append({"book_title": book.title, "image": book.image, "progress_rate": rounded_progress_rate, "remaining_days": remaining_days})
 
 
     # daily_logsのdateリストを取得

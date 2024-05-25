@@ -30,6 +30,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.get("/")
+def root():
+    return {"message": "Hello yomitai Application"}
+
 # 各ルーターを適切なプレフィックスでインクルード
 app.include_router(signup_router, prefix="/api/signup", tags=["signup"])
 app.include_router(login_router, prefix="/api/login", tags=["login"])
@@ -42,4 +47,3 @@ app.include_router(get_library, prefix="/api/library", tags=["get_library"])
 app.include_router(graph, prefix="/api/graph", tags=["graph"])
 app.include_router(get_awards, prefix="/api/awards", tags=["awards"])
 app.include_router(get_book_detail, prefix="/api/books", tags=["book_details"])
-

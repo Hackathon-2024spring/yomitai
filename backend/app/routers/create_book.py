@@ -19,6 +19,10 @@ def process_book_registration(request: Request,book: schemas.CreateBook, db: Ses
     # セッションIDに紐づくユーザーIDの取得
     user_id = sessions[session_id]
 
+    # ZeroDivisionErrorを回避
+    if book.total_page == 0 :
+        raise HTTPException(status_code=400,detail="ページ数が０だと登録できません")
+
     # ジャンルを検索しジャンルIDを取得
     genre = crud.get_genre_by_name(db, name=book.genre)
     # if not genre:
