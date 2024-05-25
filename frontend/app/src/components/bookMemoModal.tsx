@@ -17,6 +17,7 @@ interface bookRegisterFormProps {
 }
 
 export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
+  // interfaceを用いて切り出せる。library.tsx参照
   const [bookMemoForm, setBookMemoForm] = useState({
     title: "",
     page_read: 0,
@@ -48,7 +49,9 @@ export default function BookMemoModal({ onClose }: bookRegisterFormProps) {
   }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     // console.log("HandleChange: ", e.target);
     const { name, value } = e.target;

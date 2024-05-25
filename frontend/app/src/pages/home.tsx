@@ -7,10 +7,10 @@ export default function Home() {
   const [data, setData] = useState(null);
 
   const fetchData = async () => {
-    // const sessionId = Cookies.get("yomitai_session");
     const sessionId = sessionStorage.getItem("yomitai_session");
     if (!sessionId) {
       console.error("No session ID found: ", sessionId);
+
       return;
     }
     try {
