@@ -9,34 +9,166 @@ interface BookData {
   tags: string[];
 }
 
-export default function Library() {
-  const [fetchData, setFetchData] = useState<BookData[]>([]); // fetchData の初期状態を null に設定
-  const [tagList, setTagList] = useState<string[]>([""]); //全てのタグ情報
-  const [selectTag, setSelectTag] = useState<string>(""); //選択されたタグ情報
-  // const [bookData, setBookData] = useState<BookData[]>([]);
+interface BookDetail {
+  id: number;
+  title: string;
+  author: string;
+  publisher: string;
+  total_page: number;
+  image: string | null;
+  start_date: string;
+  planned_end_date: string;
+  end_date: string | null;
+  created_at: string;
+  updated_at: string;
+  user_id: number;
+  book_id: number;
+  genre_id: number;
+}
 
+interface Tag {
+  "book_tags.id": number;
+  tag_name: string;
+}
+
+interface Memo {
+  "daily_logs.id": number;
+  memo: string;
+}
+
+interface BookDetailsResponse {
+  book_detail: BookDetail[];
+  tags_list: Tag[];
+  memo_list: Memo[];
+}
+
+interface BookCardProps {
+  book: BookData;
+  onClick: (bookId: number) => void;
+}
+
+interface BookDetailsProps {
+  details: BookDetailsResponse;
+}
+
+// 書籍表示のコンポーネント
+const BookCard: React.FC<BookCardProps> = ({ book, onClick }) => (
+  <div
+    className="relative mx-auto my-4 h-28
+                  w-96 transform cursor-pointer rounded-xl bg-green-100 text-gray-600 shadow-md transition-transform hover:scale-105"
+    onClick={() => onClick(book.book_id)}
+  >
+    <div className="w-full p-4">
+      <div className="flex ">
+        <div className="mr-2">
+          <img
+            src={book.image || "../img/book_tailwind.jpg"}
+            alt="description"
+            className="h-20"
+          />
+        </div>
+        <div className="flex flex-grow flex-col">
+          <div className="mx-2 font-light">{book.book_title}</div>
+          <div className="my-2 rounded-xl bg-cyan-100 p-2">
+            {book.tags.join(", ")}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+// 書籍詳細のコンポーネント
+const BookDetails: React.FC<BookDetailsProps> = ({ details }) => (
+  <div
+    className="relative mx-4 my-4 h-full w-full transform
+                   rounded-xl bg-green-100 p-4 text-gray-600 shadow-md"
+  >
+    <div className="w-full p-4">
+      <div className="flex ">
+        <div className="mr-2">
+          <img
+            src={details.book_detail[0].image || "../img/book_tailwind.jpg"}
+            alt="description"
+            className="mr-4 h-40"
+          />
+        </div>
+        <div className="font-midium flex flex-grow flex-col">
+          <div className="mb-4 text-4xl underline underline-offset-8">
+            {details.book_detail[0].title}
+          </div>
+          <div className="mb-4">読書進捗ステータス情報</div>
+          <div className="my-4 mb-4 rounded-xl bg-cyan-100 p-4">
+            タグ: {details.tags_list.map((tag) => `#${tag.tag_name}`).join(" ")}
+          </div>
+          {details.memo_list.map((memo) => (
+            <textarea
+              key={memo["daily_logs.id"]}
+              className="mb-4 rounded-xl bg-yellow-50 p-4"
+              readOnly
+              value={memo.memo}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+export default function Library() {
+  const [fetchData, setFetchData] = useState<BookData[]>([]); // 初期値を空の配列に設定
+  const [bookDetails, setBookDetails] = useState<BookDetailsResponse | null>(
+    null,
+  );
+  const [selectTag, setSelectTag] = useState<string>(""); //選択されたタグ情報
   const ref = useRef<HTMLInputElement>(null);
+  const [selectedBookId, setSelectedBookId] = useState<number | null>(1);
 
   useEffect(() => {
-    const fetchDatafunc = async () => {
-      await fetch("http://localhost:8000/api/library", {
+    fetch("http://localhost:8000/api/library", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Data received:", data); // デバッグ用ログ
+        if (Array.isArray(data)) {
+          console.log("Books data:", data); // 追加のデバッグ用ログ
+          setFetchData(data);
+        } else {
+          console.error("Unexpected data format:", data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (selectedBookId !== null) {
+      console.log(`Fetching details for book ID: ${selectedBookId}`); // デバッグ用ログ
+      fetch(`http://localhost:8000/api/books/${selectedBookId}/details`, {
         method: "GET",
         credentials: "include",
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log("Data received:", data); // デバッグ用ログ
-          setFetchData(data);
-          console.log("fetchData", fetchData);
-          data.map((fetchbookData: BookData) =>
-            fetchbookData.tags.map((tag: string) =>
-              setTagList([...tagList, tag]),
-            ),
-          );
+          console.log("Book details received:", data); // デバッグ用ログ
+          setBookDetails(data);
         });
-    };
-    fetchDatafunc();
-  }, []); // [] はコンポーネントの初回レンダリング時のみ実行するため
+    }
+  }, [selectedBookId]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (ref.current) {
+      console.log(ref.current.value);
+    }
+  };
+  const handleBookClick = (bookId: number) => {
+    console.log(`Book ID: ${bookId} clicked`);
+    setSelectedBookId(bookId);
+  };
 
   // タグ検索欄の更新
   const handleChange = (
@@ -47,13 +179,6 @@ export default function Library() {
     setSelectTag(value);
     console.log(name, " : ", value);
     console.log("selectTag: ", selectTag);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (ref.current) {
-      console.log(ref.current.value);
-    }
   };
 
   return (
@@ -79,82 +204,27 @@ export default function Library() {
                       {data.tags}
                     </option>
                   ))}
-                {/* <option>仮tag1</option>
-                <option>仮tag2</option> */}
               </Select>
             </form>
 
             {/* 書籍一覧表示部 */}
             <div className="flex flex-col items-center p-4">
-              {fetchData.length === 0 ? (
-                <div>Loading...</div>
-              ) : (
+              {fetchData ? (
+                fetchData &&
                 fetchData.map((book) => (
-                  <div
+                  <BookCard
                     key={book.book_id}
-                    className="relative mx-auto my-4 h-28
-                  w-96 transform rounded-xl bg-green-100 text-gray-600 shadow-md transition-transform hover:scale-105"
-                  >
-                    <div className="w-full p-4">
-                      <div className="flex ">
-                        <div className="mr-2">
-                          <img
-                            src={
-                              book.image ||
-                              "../../public/img/book_leadablecode.jpeg"
-                            } // デフォルト画像をとりあえずリーダブルコードの画像に設定
-                            alt={book.book_title}
-                            className="h-20"
-                          />
-                        </div>
-                        <div className="flex flex-grow flex-col">
-                          <div className="mx-2 font-light">
-                            {book.book_title}
-                          </div>
-                          <div className="my-2 rounded-xl bg-cyan-100 p-2">
-                            {book.tags.join(", ")}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    book={book}
+                    onClick={handleBookClick}
+                  />
                 ))
+              ) : (
+                <p>No Books Available</p>
               )}
             </div>
           </div>
-
           <div className="m-4 flex w-3/5 items-center justify-center ">
-            <div
-              className="relative mx-4 my-4 h-full w-full transform
-                   rounded-xl bg-green-100 p-4 text-gray-600 shadow-md"
-            >
-              <div className="w-full p-4">
-                <div className="flex ">
-                  <div className="mr-2">
-                    <img
-                      src="../img/book_tailwind.jpg"
-                      alt="description"
-                      className="mr-4 h-40"
-                    />
-                  </div>
-                  <div className="font-midium flex flex-grow flex-col">
-                    <div className="mb-4 text-4xl underline underline-offset-8">
-                      tailwindcss 実践入門
-                    </div>
-                    <div className="mb-4">読書進捗ステータス情報</div>
-                    <div className="my-4 mb-4 rounded-xl bg-cyan-100 p-4">
-                      タグ一覧
-                    </div>
-                    <textarea className="mb-4 rounded-xl bg-yellow-50 p-4">
-                      メモ情報1
-                    </textarea>
-                    <textarea className="mb-4 rounded-xl bg-yellow-50 p-4">
-                      メモ情報2
-                    </textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {bookDetails && <BookDetails details={bookDetails} />}
           </div>
         </div>
       </section>
