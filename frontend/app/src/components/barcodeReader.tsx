@@ -28,6 +28,7 @@ export default function BarcodeReader({
     const authors = item.volumeInfo.authors.join(", ");
     const publisher = item.volumeInfo.publisher;
     const pages = item.volumeInfo.pageCount;
+    const image = item.volumeInfo.imageLinks.thumbnail;
 
     setBookInfo({
       title: title,
@@ -35,6 +36,7 @@ export default function BarcodeReader({
       publisher: publisher,
       pages: pages,
       isbn: isbncode,
+      image: image,
     });
   };
 

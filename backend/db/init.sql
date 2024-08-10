@@ -33,7 +33,7 @@ CREATE TABLE books (
     author VARCHAR(255),
     publisher VARCHAR(255),
     total_page INT,
-    isbn_code INT,
+    isbn_code BIGINT,
     image VARCHAR(255),
     created_at Datetime DEFAULT CURRENT_TIMESTAMP,
     updated_at Datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

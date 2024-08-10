@@ -37,7 +37,7 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
     author: bookInfo.authors || "",
     publisher: bookInfo.publisher || "",
     total_page: Number(bookInfo.pages) || 0,
-    image: "",
+    image: bookInfo.image || "",
     created_at: new Date().toISOString(),
     start_date: new Date().toISOString().split("T")[0],
     planned_end_date: "",
@@ -199,7 +199,7 @@ export default function BookRegisterForm({ onClose }: bookRegisterFormProps) {
                 </Field>
                 <Field className="m-2 grid grid-cols-2">
                   <Label className="mr-2 flex items-center justify-center">
-                    読了開始日
+                    読書開始日
                   </Label>
                   <Input
                     className="rounded-lg border p-2 text-center"
